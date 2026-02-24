@@ -1,1 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spartan Hockey — 2014 Major Stats</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #050810;
+      --dark: #0b1120;
+      --panel: #111827;
+      --border: #1e2d45;
+      --ice: #c8e8f8;
+      --ice-dim: #5a8fa8;
+      --gold: #f5a623;
+      --gold-dim: #b37315;
+      --red: #e53e3e;
+      --green: #38a169;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --spartan: #c8e8f8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Ice texture background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 120% 60% at 50% -10%, #0d2a4a 0%, transparent 60%),
+        radial-gradient(ellipse 80% 40% at 80% 110%, #071a30 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .rink-lines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.04;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 79px,
+          #88ccff 79px,
+          #88ccff 80px
+        );
+    }
+
+    main { position: relative; z-index: 1; }
+
+    /* ---- Header ---- */
+    header {
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .logo-ring {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid var(--ice);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.2rem;
+      font-size: 2.2rem;
+      box-shadow: 0 0 30px rgba(200,232,248,0.2), inset 0 0 20px rgba(200,232,248,0.05);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(200,232,248,0.2), inset 0 0 20px rgba(200,232,248,0.05); }
+      50% { box-shadow: 0 0 50px rgba(200,232,248,0.4), inset 0 0 20px rgba(200,232,248,0.1); }
+    }
+
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ice);
+      line-height: 1;
+    }
+
+    .subtitle {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 0.4rem;
+    }
+
+    .updated {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ---- Nav Tabs ---- */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.25rem;
+      padding: 1.5rem 1rem 0;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.4rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab:hover { color: var(--ice); border-color: var(--ice-dim); }
+
+    .tab.active {
+      background: rgba(200,232,248,0.1);
+      color: var(--ice);
+      border-color: var(--ice);
+    }
+
+    /* ---- Sections ---- */
+    section {
+      display: none;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    section.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ice);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--border), transparent);
+    }
+
+    /* ---- Tables ---- */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    thead tr {
+      background: rgba(200,232,248,0.06);
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+    th.num { text-align: right; }
+
+    td {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid rgba(30,45,69,0.6);
+      vertical-align: middle;
+    }
+
+    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+    tbody tr:last-child td { border-bottom: none; }
+
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background: rgba(200,232,248,0.04); }
+
+    /* Rank column */
+    .rank {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      color: var(--muted);
+      font-size: 0.85rem;
+      width: 2.5rem;
+    }
+
+    .rank.top { color: var(--gold); }
+
+    /* Player name */
+    .player-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .player-name.spartan { color: var(--ice); }
+
+    .team-badge {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .team-badge.spartan { color: var(--ice-dim); }
+
+    /* Stat highlights */
+    .stat-pts {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .stat-g { color: var(--ice); font-weight: 600; }
+
+    /* Standings */
+    .pts-cell {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .spartan-row { background: rgba(200,232,248,0.05) !important; }
+    .spartan-row td { border-left: 3px solid var(--ice); }
+    .spartan-row:first-child td:first-child { border-left: 3px solid var(--ice); }
+
+    /* Games */
+    .game-result {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+    }
+
+    .w { color: var(--green); }
+    .l { color: var(--red); }
+    .t { color: var(--muted); }
+
+    a.game-link {
+      font-size: 0.75rem;
+      color: var(--ice-dim);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      transition: all 0.15s;
+    }
+
+    a.game-link:hover { color: var(--ice); border-color: var(--ice-dim); }
+
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.9rem;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { color: var(--ice); border-color: var(--ice-dim); }
+    .filter-btn.active { background: rgba(200,232,248,0.1); color: var(--ice); border-color: var(--ice); }
+
+    /* Loading / error */
+    .state-msg {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .state-msg .icon { font-size: 3rem; margin-bottom: 1rem; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      th, td { padding: 0.6rem 0.6rem; }
+      .hide-mobile { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="rink-lines"></div>
+<main>
+  <header>
+    <div class="logo-ring">🏒</div>
+    <h1>Spartan Hockey</h1>
+    <div class="subtitle">2014 Major Division · HSL</div>
+    <div class="updated" id="updated-time">Loading...</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('spartan')">Spartan Leaders</button>
+    <button class="tab" onclick="showTab('league')">League Leaders</button>
+    <button class="tab" onclick="showTab('standings')">Standings</button>
+    <button class="tab" onclick="showTab('games')">Games</button>
+  </div>
+
+  <!-- Spartan Leaders -->
+  <section id="tab-spartan" class="active">
+    <div class="section-title">Spartan Hockey Academy — 15M</div>
+    <div id="spartan-content" class="state-msg"><div class="icon">⏳</div>Loading stats...</div>
+  </section>
+
+  <!-- League Leaders -->
+  <section id="tab-league">
+    <div class="section-title">League Scoring Leaders</div>
+    <div class="filter-bar" id="league-filter"></div>
+    <div id="league-content" class="state-msg"><div class="icon">⏳</div>Loading stats...</div>
+  </section>
+
+  <!-- Standings -->
+  <section id="tab-standings">
+    <div class="section-title">Division Standings</div>
+    <div id="standings-content" class="state-msg"><div class="icon">⏳</div>Loading stats...</div>
+  </section>
+
+  <!-- Games -->
+  <section id="tab-games">
+    <div class="section-title">Game Results</div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterGames('all', this)">All Games</button>
+      <button class="filter-btn" onclick="filterGames('spartan', this)">Spartan Only</button>
+    </div>
+    <div id="games-content" class="state-msg"><div class="icon">⏳</div>Loading stats...</div>
+  </section>
+</main>
+
+<script>
+  const SPARTAN_TEAM_ID = "350513";
+  let allData = null;
+  let allGames = [];
+  let leagueFilter = 'all';
+
+  // ---- Tab switching ----
+  function showTab(name) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // ---- Load data ----
+  async function loadData() {
+    try {
+      const res = await fetch('data.json?_=' + Date.now());
+      if (!res.ok) throw new Error('No data yet');
+      allData = await res.json();
+      render();
+    } catch (e) {
+      const msg = `<div class="state-msg"><div class="icon">🚧</div>Stats not available yet. Run the scraper first to generate data.json.</div>`;
+      ['spartan-content','league-content','standings-content','games-content'].forEach(id => {
+        document.getElementById(id).innerHTML = msg;
+      });
+      document.getElementById('updated-time').textContent = 'No data loaded';
+    }
+  }
+
+  function render() {
+    document.getElementById('updated-time').textContent = 'Last updated: ' + allData.updated + ' · ' + allData.games_processed + ' games processed';
+    renderSpartan();
+    renderLeague();
+    renderStandings();
+    renderGames('all');
+  }
+
+  // ---- Spartan leaders ----
+  function renderSpartan() {
+    const players = allData.spartan_leaders;
+    if (!players || players.length === 0) {
+      document.getElementById('spartan-content').innerHTML = '<div class="state-msg">No Spartan stats yet.</div>';
+      return;
+    }
+    document.getElementById('spartan-content').innerHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>RNK</th>
+            <th>#</th>
+            <th>Player</th>
+            <th class="num">GP</th>
+            <th class="num">G</th>
+            <th class="num">A</th>
+            <th class="num">PTS</th>
+            <th class="num hide-mobile">PIM</th>
+          </tr></thead>
+          <tbody>
+            ${players.map((p, i) => `
+              <tr>
+                <td class="rank ${i < 3 ? 'top' : ''}">${i < 3 ? ['①','②','③'][i] : i+1}</td>
+                <td class="muted">${p.jersey}</td>
+                <td><div class="player-name spartan">${p.name}</div></td>
+                <td class="num">${p.gp}</td>
+                <td class="num stat-g">${p.g}</td>
+                <td class="num">${p.a}</td>
+                <td class="num stat-pts">${p.pts}</td>
+                <td class="num hide-mobile">${p.pim}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  // ---- League leaders ----
+  function buildTeamFilter(leaders) {
+    const teams = [...new Set(leaders.map(p => p.team))].sort();
+    const bar = document.getElementById('league-filter');
+    bar.innerHTML = `<button class="filter-btn active" onclick="setLeagueFilter('all',this)">All Teams</button>` +
+      teams.map(t => `<button class="filter-btn ${t.includes('Spartan') && t.includes('15M') ? 'spartan-filter' : ''}" onclick="setLeagueFilter('${t.replace(/'/g,"\\'")}',this)">${t}</button>`).join('');
+  }
+
+  function setLeagueFilter(team, btn) {
+    leagueFilter = team;
+    document.querySelectorAll('#league-filter .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderLeague();
+  }
+
+  function renderLeague() {
+    let players = allData.leaders;
+    if (!players || players.length === 0) {
+      document.getElementById('league-content').innerHTML = '<div class="state-msg">No league stats yet.</div>';
+      return;
+    }
+
+    if (document.getElementById('league-filter').innerHTML === '') {
+      buildTeamFilter(players);
+    }
+
+    if (leagueFilter !== 'all') {
+      players = players.filter(p => p.team === leagueFilter);
+    }
+
+    // Re-rank after filter
+    document.getElementById('league-content').innerHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>RNK</th>
+            <th>#</th>
+            <th>Player</th>
+            <th class="num">GP</th>
+            <th class="num">G</th>
+            <th class="num">A</th>
+            <th class="num">PTS</th>
+            <th class="num hide-mobile">PIM</th>
+          </tr></thead>
+          <tbody>
+            ${players.slice(0, 100).map((p, i) => {
+              const isSpartan = p.team_id === SPARTAN_TEAM_ID;
+              return `<tr>
+                <td class="rank ${i < 3 ? 'top' : ''}">${i < 3 ? ['①','②','③'][i] : i+1}</td>
+                <td>${p.jersey}</td>
+                <td>
+                  <div class="player-name ${isSpartan ? 'spartan' : ''}">${p.name}</div>
+                  <div class="team-badge ${isSpartan ? 'spartan' : ''}">${p.team}</div>
+                </td>
+                <td class="num">${p.gp}</td>
+                <td class="num stat-g">${p.g}</td>
+                <td class="num">${p.a}</td>
+                <td class="num stat-pts">${p.pts}</td>
+                <td class="num hide-mobile">${p.pim}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  // ---- Standings ----
+  function renderStandings() {
+    const teams = allData.standings;
+    if (!teams || teams.length === 0) {
+      document.getElementById('standings-content').innerHTML = '<div class="state-msg">No standings yet.</div>';
+      return;
+    }
+    document.getElementById('standings-content').innerHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>RNK</th>
+            <th>Team</th>
+            <th class="num">GP</th>
+            <th class="num">W</th>
+            <th class="num">L</th>
+            <th class="num hide-mobile">OTL</th>
+            <th class="num hide-mobile">GF</th>
+            <th class="num hide-mobile">GA</th>
+            <th class="num">PTS</th>
+          </tr></thead>
+          <tbody>
+            ${teams.map((t, i) => {
+              const isSpartan = t.team_id === SPARTAN_TEAM_ID;
+              return `<tr class="${isSpartan ? 'spartan-row' : ''}">
+                <td class="rank ${i < 3 ? 'top' : ''}">${i+1}</td>
+                <td class="${isSpartan ? 'player-name spartan' : 'player-name'}">${t.team}</td>
+                <td class="num">${t.gp}</td>
+                <td class="num">${t.w}</td>
+                <td class="num">${t.l}</td>
+                <td class="num hide-mobile">${t.otl}</td>
+                <td class="num hide-mobile">${t.gf}</td>
+                <td class="num hide-mobile">${t.ga}</td>
+                <td class="num pts-cell">${t.pts}</td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  // ---- Games ----
+  function filterGames(filter, btn) {
+    document.querySelectorAll('#tab-games .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGames(filter);
+  }
+
+  function renderGames(filter) {
+    allGames = allData.games || [];
+    let games = [...allGames].reverse(); // most recent first
+
+    if (filter === 'spartan') {
+      games = games.filter(g =>
+        g.home_team.includes('Spartan') || g.away_team.includes('Spartan')
+      );
+    }
+
+    if (games.length === 0) {
+      document.getElementById('games-content').innerHTML = '<div class="state-msg">No games yet.</div>';
+      return;
+    }
+
+    document.getElementById('games-content').innerHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>Date</th>
+            <th>Home</th>
+            <th class="num">Score</th>
+            <th>Away</th>
+            <th></th>
+          </tr></thead>
+          <tbody>
+            ${games.map(g => {
+              const hSpartan = g.home_team.includes('Spartan') && g.home_team.includes('15M');
+              const aSpartan = g.away_team.includes('Spartan') && g.away_team.includes('15M');
+              let resultClass = '';
+              if (hSpartan) resultClass = g.home_score > g.away_score ? 'w' : g.home_score < g.away_score ? 'l' : 't';
+              if (aSpartan) resultClass = g.away_score > g.home_score ? 'w' : g.away_score < g.home_score ? 'l' : 't';
+              return `<tr>
+                <td style="font-size:0.8rem;color:var(--muted)">${g.date}</td>
+                <td class="${hSpartan ? 'player-name spartan' : ''}" style="font-size:0.88rem">${g.home_team}</td>
+                <td class="num game-result ${resultClass}">${g.home_score} – ${g.away_score}</td>
+                <td class="${aSpartan ? 'player-name spartan' : ''}" style="font-size:0.88rem">${g.away_team}</td>
+                <td><a class="game-link" href="${g.game_url}" target="_blank">BOX</a></td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+
+  loadData();
+</script>
+</body>
+</html>
 

@@ -1,6 +1,6 @@
 """
 HSL Hockey Super League - 2014 Major Division Stats Scraper
-Scrapes all completed game pages, totals up G/A/PTS/PIM per player,
+Scans game IDs directly, totals up G/A/PTS/PIM per player,
 and writes results to docs/data.json for the website to display.
 """
 
@@ -14,30 +14,26 @@ from datetime import datetime
 DIVISION_ID = "23371"
 SPARTAN_TEAM_ID = "350513"
 BASE_URL = "https://hockeysuperleague.ca"
-SCHEDULE_URL = f"{BASE_URL}/division/0/{DIVISION_ID}/masterschedule"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; HSL-stats-bot/1.0)"
 }
 
+# Game IDs for 2014 Major division games this season.
+# We scan a range and skip any that aren't Final or don't belong to this division.
+# Based on known game IDs: 1626620, 1626651, 1626652, 1626653
+# We'll scan a broad range to catch all games.
+GAME_ID_START = 1625000
+GAME_ID_END   = 1627500
+
 def get_game_links():
-    """Fetch the schedule page and return all completed game summary URLs."""
-    print(f"Fetching schedule: {SCHEDULE_URL}")
-    resp = requests.get(SCHEDULE_URL, headers=HEADERS, timeout=15)
-    resp.raise_for_status()
-    soup = BeautifulSoup(resp.text, "html.parser")
-
-    game_links = []
-    for a in soup.find_all("a", href=True):
-        href = a["href"]
-        # Game summary links look like /division/0/23371/game/view/XXXXXXX
-        if f"/division/0/{DIVISION_ID}/game/view/" in href:
-            full_url = BASE_URL + href if href.startswith("/") else href
-            if full_url not in game_links:
-                game_links.append(full_url)
-
-    print(f"Found {len(game_links)} game links")
-    return game_links
+    """Return list of all game URLs to try."""
+    urls = [
+        f"{BASE_URL}/division/0/{DIVISION_ID}/game/view/{gid}"
+        for gid in range(GAME_ID_START, GAME_ID_END + 1)
+    ]
+    print(f"Will scan {len(urls)} game IDs from {GAME_ID_START} to {GAME_ID_END}")
+    return urls
 
 def parse_game(url):
     """
@@ -57,10 +53,16 @@ def parse_game(url):
         resp = requests.get(url, headers=HEADERS, timeout=15)
         resp.raise_for_status()
     except Exception as e:
-        print(f"  ERROR fetching {url}: {e}")
+        # 404 or other HTTP error — game ID doesn't exist, skip silently
         return None
 
     soup = BeautifulSoup(resp.text, "html.parser")
+
+    # Make sure this page belongs to our division by checking for our division ID
+    # in the page links (team links contain the division ID)
+    page_text = resp.text
+    if f"/0/{DIVISION_ID}/" not in page_text:
+        return None  # Wrong division or not a game page
 
     # Check if there are any player stat tables
     tables = soup.find_all("table")
@@ -255,14 +257,13 @@ def main():
 
     games = []
     for i, url in enumerate(game_links):
-        print(f"[{i+1}/{len(game_links)}] {url}")
+        if i % 100 == 0:
+            print(f"  Scanning ID {GAME_ID_START + i}... ({len(games)} games found so far)")
         game = parse_game(url)
         if game:
             games.append(game)
-            print(f"  ✓ {game.get('home_team','?')} {game.get('home_score','?')} - {game.get('away_score','?')} {game.get('away_team','?')} ({len(game['players'])} players)")
-        else:
-            print(f"  — skipped (no final stats)")
-        time.sleep(0.5)  # be polite to the server
+            print(f"  ✓ [{game.get('date','')}] {game.get('home_team','?')} {game.get('home_score','?')} - {game.get('away_score','?')} {game.get('away_team','?')} ({len(game['players'])} players)")
+        time.sleep(0.3)  # be polite to the server
 
     print(f"\nProcessed {len(games)} completed games")
 

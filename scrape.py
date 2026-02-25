@@ -1,7 +1,10 @@
 """
 HSL Hockey Super League - 2014 Major Division Stats Scraper
-Scans game IDs directly, totals up G/A/PTS/PIM per player,
+Scans game IDs, totals up G/A/PTS/PIM per player,
 and writes results to docs/data.json for the website to display.
+
+Incremental mode: already-processed game IDs are cached in docs/game_cache.json
+so re-runs only fetch new games instead of scanning the full ID range.
 """
 
 import requests
@@ -9,6 +12,7 @@ from bs4 import BeautifulSoup
 import json
 import re
 import time
+import os
 from datetime import datetime
 
 DIVISION_ID = "23371"
@@ -19,152 +23,171 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (compatible; HSL-stats-bot/1.0)"
 }
 
-# Game IDs for 2014 Major division games this season.
-# We scan a range and skip any that aren't Final or don't belong to this division.
-# Based on known game IDs: 1626620, 1626651, 1626652, 1626653
-# We'll scan a broad range to catch all games.
 GAME_ID_START = 1625000
 GAME_ID_END   = 1627500
 
-def get_game_links():
-    """Return list of all game URLs to try."""
-    urls = [
-        f"{BASE_URL}/division/0/{DIVISION_ID}/game/view/{gid}"
-        for gid in range(GAME_ID_START, GAME_ID_END + 1)
-    ]
-    print(f"Will scan {len(urls)} game IDs from {GAME_ID_START} to {GAME_ID_END}")
-    return urls
+CACHE_FILE = "docs/game_cache.json"
+OUTPUT_FILE = "docs/data.json"
 
-def parse_game(url):
+
+# ---------------------------------------------------------------------------
+# Cache helpers
+# ---------------------------------------------------------------------------
+
+def load_cache():
     """
-    Parse a single game page. Returns:
-      {
-        "game_url": url,
-        "home_team": str,
-        "away_team": str,
-        "home_score": int,
-        "away_score": int,
-        "date": str,
-        "players": [ {name, team, team_id, jersey, g, a, pts, pim}, ... ]
-      }
-    or None if the game has no stats yet.
+    Returns (processed_ids, cached_games) where:
+      processed_ids = set of game ID ints we've already tried (hit or miss)
+      cached_games  = list of game dicts that were successfully parsed
     """
+    if not os.path.exists(CACHE_FILE):
+        return set(), []
+    with open(CACHE_FILE) as f:
+        data = json.load(f)
+    return set(data.get("processed_ids", [])), data.get("games", [])
+
+
+def save_cache(processed_ids, games):
+    os.makedirs("docs", exist_ok=True)
+    with open(CACHE_FILE, "w") as f:
+        json.dump({
+            "processed_ids": sorted(processed_ids),
+            "games": games
+        }, f, indent=2)
+
+
+# ---------------------------------------------------------------------------
+# Scraping
+# ---------------------------------------------------------------------------
+
+def get_game_ids_to_scan(processed_ids):
+    all_ids = set(range(GAME_ID_START, GAME_ID_END + 1))
+    new_ids = sorted(all_ids - processed_ids)
+    print(f"Total range: {len(all_ids)} IDs | Already processed: {len(processed_ids)} | New to scan: {len(new_ids)}")
+    return new_ids
+
+
+def parse_game(game_id):
+    """
+    Fetch and parse a single game page.
+    Returns a game dict on success, or None if the game should be skipped.
+
+    Key fixes vs. old version:
+      1. Division check uses resp.url (after redirects) not page text.
+      2. team_id is extracted from each player's OWN link, not just the first link in the table.
+    """
+    url = f"{BASE_URL}/division/0/{DIVISION_ID}/game/view/{game_id}"
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
         resp.raise_for_status()
-    except Exception as e:
-        # 404 or other HTTP error — game ID doesn't exist, skip silently
-        return None
+    except Exception:
+        return None  # 404 or network error — skip silently
+
+    # --- FIX 1: Division filter via final URL after any redirects ---
+    # If HSL redirects us to a different division, the URL will change.
+    final_url = resp.url
+    if f"/0/{DIVISION_ID}/" not in final_url:
+        return None  # Redirected to a different division
 
     soup = BeautifulSoup(resp.text, "html.parser")
 
-    # Make sure this page belongs to our division by checking for our division ID
-    # in the page links (team links contain the division ID)
-    page_text = resp.text
-    if f"/0/{DIVISION_ID}/" not in page_text:
-        return None  # Wrong division or not a game page
-
-    # Check if there are any player stat tables
+    # Must have tables
     tables = soup.find_all("table")
     if not tables:
         return None
 
-    # --- Game info ---
-    game_info = {"game_url": url, "players": []}
-
-    # Try to find team names and scores
-    # The page has team names in headings above each table
-    headings = soup.find_all(["h1", "h2", "h3", "h4"])
-    team_names = []
-    for h in headings:
-        text = h.get_text(strip=True)
-        # Skip generic headings
-        if text in ("Scoring", "Shots", "Scoring Summary", "Penalty Summary", "Staff") or not text:
-            continue
-        if len(text) > 3 and text not in team_names:
-            team_names.append(text)
-
-    # Score: look for pattern like "3 - 1 Final"
     full_text = soup.get_text()
+
+    # Must be a Final game
     score_match = re.search(r'(\d+)\s*[-–]\s*(\d+)\s*Final', full_text)
-    if score_match:
-        game_info["home_score"] = int(score_match.group(1))
-        game_info["away_score"] = int(score_match.group(2))
-    else:
-        # Game not final yet
+    if not score_match:
         return None
 
+    home_score = int(score_match.group(1))
+    away_score = int(score_match.group(2))
+
     # Date
-    date_match = re.search(r'(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday),\s+(\w+ \d+,\s+\d{4})', full_text)
-    if date_match:
-        game_info["date"] = date_match.group(0)
-    else:
-        game_info["date"] = ""
+    date_match = re.search(
+        r'(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday),\s+(\w+ \d+,\s+\d{4})',
+        full_text
+    )
+    game_date = date_match.group(0) if date_match else ""
 
-    # --- Player tables ---
-    # Each team has a table with columns: # | Name | G | A | PTS | PIM
-    # The team name is in an <h1> or <h2> immediately before the table (or nearby)
-    # We'll find all tables that have the right columns
-
+    # --- Find player stat tables (columns: # Name G A PTS PIM) ---
     player_tables = []
     for table in tables:
-        headers_row = table.find("tr")
-        if not headers_row:
+        header_row = table.find("tr")
+        if not header_row:
             continue
-        headers_text = [th.get_text(strip=True).upper() for th in headers_row.find_all(["th", "td"])]
-        if "G" in headers_text and "A" in headers_text and "PTS" in headers_text:
+        col_names = [th.get_text(strip=True).upper() for th in header_row.find_all(["th", "td"])]
+        if "G" in col_names and "A" in col_names and "PTS" in col_names:
             player_tables.append(table)
 
     if len(player_tables) < 2:
         return None
 
-    # Find team name for each table by walking backwards through siblings
-    for i, table in enumerate(player_tables):
-        # Find the closest preceding heading
+    game_info = {
+        "game_url": final_url,
+        "date": game_date,
+        "home_score": home_score,
+        "away_score": away_score,
+        "home_team": "",
+        "home_team_id": "",
+        "away_team": "",
+        "away_team_id": "",
+        "players": []
+    }
+
+    skip_headings = {"Scoring", "Shots", "Scoring Summary", "Penalty Summary", "Staff"}
+
+    for i, table in enumerate(player_tables[:2]):  # only first 2 tables = home & away
+        # Find closest preceding heading for team name
         team_name = f"Team {i+1}"
-        team_id = ""
         for sibling in table.find_all_previous(["h1", "h2", "h3", "h4"]):
             text = sibling.get_text(strip=True)
-            if text and text not in ("Scoring", "Shots", "Scoring Summary", "Penalty Summary"):
+            if text and text not in skip_headings:
                 team_name = text
                 break
 
-        # Also try to extract team_id from player links in the table
-        first_player_link = table.find("a", href=re.compile(r"/team/\d+/0/\d+/(\d+)/player/"))
-        if first_player_link:
-            m = re.search(r'/team/\d+/0/\d+/(\d+)/player/', first_player_link["href"])
-            if m:
-                team_id = m.group(1)
-
         if i == 0:
             game_info["home_team"] = team_name
-            game_info["home_team_id"] = team_id
         else:
             game_info["away_team"] = team_name
-            game_info["away_team_id"] = team_id
 
-        # Parse rows
+        # Parse player rows
         rows = table.find_all("tr")[1:]  # skip header
         for row in rows:
             cols = row.find_all("td")
             if len(cols) < 6:
                 continue
+
             jersey = cols[0].get_text(strip=True)
             name = cols[1].get_text(strip=True)
             if not name:
                 continue
 
-            # Extract player_id from link if available
+            # --- FIX 2: Extract team_id from THIS player's own link ---
             player_id = ""
+            team_id = ""
             link = cols[1].find("a", href=True)
             if link:
-                pm = re.search(r'/player/(\d+)', link["href"])
-                if pm:
-                    player_id = pm.group(1)
+                href = link["href"]
+                # href pattern: /team/11823/0/23371/350513/player/4042777
+                m = re.search(r'/team/\d+/0/\d+/(\d+)/player/(\d+)', href)
+                if m:
+                    team_id = m.group(1)
+                    player_id = m.group(2)
+
+            # Update team_id on game_info from first player in each table
+            if team_id:
+                if i == 0 and not game_info["home_team_id"]:
+                    game_info["home_team_id"] = team_id
+                elif i == 1 and not game_info["away_team_id"]:
+                    game_info["away_team_id"] = team_id
 
             try:
-                g = int(cols[2].get_text(strip=True) or 0)
-                a = int(cols[3].get_text(strip=True) or 0)
+                g   = int(cols[2].get_text(strip=True) or 0)
+                a   = int(cols[3].get_text(strip=True) or 0)
                 pts = int(cols[4].get_text(strip=True) or 0)
                 pim = int(cols[5].get_text(strip=True) or 0)
             except ValueError:
@@ -174,20 +197,20 @@ def parse_game(url):
                 "name": name,
                 "player_id": player_id,
                 "team": team_name,
-                "team_id": team_id,
+                "team_id": team_id,   # now per-player, not table-level
                 "jersey": jersey,
-                "g": g,
-                "a": a,
-                "pts": pts,
-                "pim": pim,
+                "g": g, "a": a, "pts": pts, "pim": pim,
             })
 
     return game_info
 
-def build_leaders(games):
-    """Aggregate per-player stats across all games."""
-    players = {}  # player_id -> stats dict
 
+# ---------------------------------------------------------------------------
+# Aggregation
+# ---------------------------------------------------------------------------
+
+def build_leaders(games):
+    players = {}
     for game in games:
         for p in game["players"]:
             key = p["player_id"] if p["player_id"] else p["name"]
@@ -200,31 +223,31 @@ def build_leaders(games):
                     "jersey": p["jersey"],
                     "g": 0, "a": 0, "pts": 0, "pim": 0, "gp": 0
                 }
-            players[key]["g"] += p["g"]
-            players[key]["a"] += p["a"]
+            players[key]["g"]   += p["g"]
+            players[key]["a"]   += p["a"]
             players[key]["pts"] += p["pts"]
             players[key]["pim"] += p["pim"]
-            players[key]["gp"] += 1
+            players[key]["gp"]  += 1
 
     return sorted(players.values(), key=lambda x: (x["pts"], x["g"]), reverse=True)
 
-def build_standings(games):
-    """Build team standings from game results."""
-    teams = {}
 
+def build_standings(games):
+    teams = {}
     for game in games:
-        home = game.get("home_team", "")
-        away = game.get("away_team", "")
-        home_id = game.get("home_team_id", "")
-        away_id = game.get("away_team_id", "")
-        hs = game.get("home_score", 0)
-        as_ = game.get("away_score", 0)
+        home, away = game.get("home_team", ""), game.get("away_team", "")
+        home_id, away_id = game.get("home_team_id", ""), game.get("away_team_id", "")
+        hs, as_ = game.get("home_score", 0), game.get("away_score", 0)
 
         for tid, tname in [(home_id, home), (away_id, away)]:
             if not tname:
                 continue
             if tid not in teams:
-                teams[tid] = {"team": tname, "team_id": tid, "gp": 0, "w": 0, "l": 0, "otl": 0, "gf": 0, "ga": 0, "pts": 0}
+                teams[tid] = {
+                    "team": tname, "team_id": tid,
+                    "gp": 0, "w": 0, "l": 0, "otl": 0,
+                    "gf": 0, "ga": 0, "pts": 0
+                }
 
         if home and away:
             teams[home_id]["gp"] += 1
@@ -235,13 +258,13 @@ def build_standings(games):
             teams[away_id]["ga"] += hs
 
             if hs > as_:
-                teams[home_id]["w"] += 1
+                teams[home_id]["w"]   += 1
                 teams[home_id]["pts"] += 2
-                teams[away_id]["l"] += 1
+                teams[away_id]["l"]   += 1
             elif as_ > hs:
-                teams[away_id]["w"] += 1
+                teams[away_id]["w"]   += 1
                 teams[away_id]["pts"] += 2
-                teams[home_id]["l"] += 1
+                teams[home_id]["l"]   += 1
             else:
                 teams[home_id]["otl"] += 1
                 teams[away_id]["otl"] += 1
@@ -250,33 +273,59 @@ def build_standings(games):
 
     return sorted(teams.values(), key=lambda x: (x["pts"], x["gf"] - x["ga"]), reverse=True)
 
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
 def main():
-    print("=== HSL 2014 Major Stats Scraper ===")
+    print("=== HSL 2014 Major Stats Scraper (Incremental) ===")
 
-    game_links = get_game_links()
+    processed_ids, cached_games = load_cache()
+    print(f"Loaded cache: {len(cached_games)} games already stored")
 
-    games = []
-    for i, url in enumerate(game_links):
-        if i % 100 == 0:
-            print(f"  Scanning ID {GAME_ID_START + i}... ({len(games)} games found so far)")
-        game = parse_game(url)
+    new_ids = get_game_ids_to_scan(processed_ids)
+
+    new_games = []
+    newly_processed = set()
+
+    for i, game_id in enumerate(new_ids):
+        if i % 100 == 0 and i > 0:
+            print(f"  Progress: {i}/{len(new_ids)} scanned | {len(new_games)} new games found")
+
+        game = parse_game(game_id)
+        newly_processed.add(game_id)
+
         if game:
-            games.append(game)
-            print(f"  ✓ [{game.get('date','')}] {game.get('home_team','?')} {game.get('home_score','?')} - {game.get('away_score','?')} {game.get('away_team','?')} ({len(game['players'])} players)")
-        time.sleep(0.3)  # be polite to the server
+            new_games.append(game)
+            print(f"  ✓ [{game.get('date','')}] "
+                  f"{game.get('home_team','?')} {game.get('home_score','?')} - "
+                  f"{game.get('away_score','?')} {game.get('away_team','?')} "
+                  f"| home_id={game.get('home_team_id','')} away_id={game.get('away_team_id','')} "
+                  f"| {len(game['players'])} players")
 
-    print(f"\nProcessed {len(games)} completed games")
+        time.sleep(0.3)
 
-    leaders = build_leaders(games)
-    standings = build_standings(games)
+    # Merge and save cache
+    all_games = cached_games + new_games
+    all_processed = processed_ids | newly_processed
+    save_cache(all_processed, all_games)
+    print(f"\nCache updated: {len(all_processed)} IDs processed, {len(all_games)} total games")
 
+    # Build output
+    leaders   = build_leaders(all_games)
+    standings = build_standings(all_games)
     spartan_players = [p for p in leaders if p["team_id"] == SPARTAN_TEAM_ID]
+
+    print(f"\nSpartan leaders found: {len(spartan_players)}")
+    for p in spartan_players[:5]:
+        print(f"  {p['name']} — {p['g']}G {p['a']}A {p['pts']}PTS (team_id={p['team_id']})")
 
     output = {
         "updated": datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"),
         "division": "2014 Major",
         "spartan_team_id": SPARTAN_TEAM_ID,
-        "games_processed": len(games),
+        "games_processed": len(all_games),
         "leaders": leaders,
         "spartan_leaders": spartan_players,
         "standings": standings,
@@ -289,17 +338,17 @@ def main():
                 "away_score": g.get("away_score", 0),
                 "game_url": g["game_url"],
             }
-            for g in games
+            for g in all_games
         ]
     }
 
-    import os
     os.makedirs("docs", exist_ok=True)
-    with open("docs/data.json", "w") as f:
+    with open(OUTPUT_FILE, "w") as f:
         json.dump(output, f, indent=2)
 
-    print(f"✓ Wrote docs/data.json")
-    print(f"  {len(leaders)} players | {len(standings)} teams | {len(games)} games")
+    print(f"\n✓ Wrote {OUTPUT_FILE}")
+    print(f"  {len(leaders)} players | {len(standings)} teams | {len(all_games)} games")
+
 
 if __name__ == "__main__":
     main()

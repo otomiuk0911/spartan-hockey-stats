@@ -38,7 +38,7 @@ RS_BASE    = "https://hockeysuperleague.ca"
 RS_DIVS    = ["23371", "23373", "32765"]
 RS_PRIME   = "23371"
 RS_SPARTAN = {"294811", "294868"}
-RS_SCAN    = (1623000, 1628000)   # anchored around known ID 1626651
+RS_SCAN    = (1624500, 1627500)   # anchored around known ID 1626651
 
 # ── Playoffs ───────────────────────────────────────────────────────────────
 PO_BASE    = "https://hslchampionship.ca"
@@ -51,7 +51,7 @@ PO_SCAN    = (1828000, 1834000)   # anchored around known IDs 1830371, 1830410
 HEADERS    = {"User-Agent": "Mozilla/5.0 (compatible; HSL-stats-bot/1.0)"}
 CACHE_FILE = "docs/game_cache.json"
 OUT_FILE   = "docs/data.json"
-SLEEP      = 0.2
+SLEEP      = 0.1
 
 
 # ── Cache ──────────────────────────────────────────────────────────────────

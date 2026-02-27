@@ -1,629 +1,726 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spartan Hockey — 2014 Major Stats</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg:         #ffffff;
-      --bg-subtle:  #f5f5f5;
-      --panel:      #fafafa;
-      --border:     #e0e0e0;
-      --border-mid: #cccccc;
-      --red:        #bf0d1e;
-      --red-bright: #d91122;
-      --red-light:  #fdf0f1;
-      --dark:       #1a1a1a;
-      --text:       #2c2c2c;
-      --muted:      #888888;
-      --muted-mid:  #555555;
-      --gold:       #9a7c2e;
-      --green:      #2e7d52;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Spartan Hockey — Stats Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════════════ */
+:root{
+  --red:#c8102e; --red2:#e8192e; --red3:rgba(200,16,46,.18);
+  --gold:#d4a843; --gold2:rgba(212,168,67,.15);
+  --ink:#080808; --surface:#111; --panel:#181818;
+  --panel2:#1e1e1e; --edge:#272727; --edge2:#333;
+  --text:#efefef; --dim:#888; --faint:#444;
+  --green:#26c281; --ice:#c8e8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);color:var(--text);
+  font-family:'Rajdhani',sans-serif;
+  min-height:100vh;overflow-x:hidden;
+}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── noise overlay ─────────────────────────────── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity:.03;
+}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Barlow', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+/* ── rink-line texture ──────────────────────────── */
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    repeating-linear-gradient(90deg,transparent,transparent 79px,
+      rgba(200,16,46,.025) 79px,rgba(200,16,46,.025) 80px),
+    repeating-linear-gradient(0deg,transparent,transparent 79px,
+      rgba(200,16,46,.015) 79px,rgba(200,16,46,.015) 80px);
+}
 
-    body::before { display: none; }
-    .rink-lines  { display: none; }
+main{position:relative;z-index:1}
 
-    main { position: relative; z-index: 1; }
+/* ═══════════════════════════════════════════════════════════
+   HERO HEADER
+═══════════════════════════════════════════════════════════ */
+.hero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#0a0a0a 0%,#0f0005 60%,#0a0a0a 100%);
+  border-bottom:1px solid var(--edge);
+}
 
-    /* ---- Header ---- */
-    header {
-      background: var(--dark);
-      padding: 2.5rem 2rem 2rem;
-      text-align: center;
-      border-bottom: 4px solid var(--red);
-      position: relative;
-    }
+/* animated red sweep */
+.hero-glow{
+  position:absolute;top:-60%;left:-20%;
+  width:70%;height:200%;
+  background:radial-gradient(ellipse,rgba(200,16,46,.12) 0%,transparent 70%);
+  animation:sweep 8s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+@keyframes sweep{from{transform:translateX(0) rotate(-5deg)}to{transform:translateX(30%) rotate(5deg)}}
 
-    .logo-wrap {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      border: 3px solid var(--red);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.2rem;
-      background: #111;
-      overflow: hidden;
-    }
+.hero-inner{
+  max-width:1160px;margin:0 auto;
+  padding:2.2rem 1.5rem 1.8rem;
+  display:flex;align-items:center;gap:2rem;
+  position:relative;z-index:1;
+}
 
-    .logo-wrap img {
-      width: 76px;
-      height: 76px;
-      object-fit: contain;
-    }
+.hero-logos{
+  display:flex;align-items:center;gap:1.2rem;flex-shrink:0;
+}
 
-    h1 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(2.2rem, 6vw, 4rem);
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: #ffffff;
-      line-height: 1;
-    }
+.logo-ring{
+  width:88px;height:88px;border-radius:50%;
+  border:2px solid var(--red);
+  background:radial-gradient(circle,rgba(200,16,46,.15),transparent 70%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 30px rgba(200,16,46,.25),inset 0 0 20px rgba(200,16,46,.08);
+  animation:ringPulse 3s ease-in-out infinite;
+  overflow:hidden;flex-shrink:0;
+}
+.logo-ring img{width:70px;height:70px;object-fit:contain}
+@keyframes ringPulse{
+  0%,100%{box-shadow:0 0 30px rgba(200,16,46,.25),inset 0 0 20px rgba(200,16,46,.08)}
+  50%{box-shadow:0 0 55px rgba(200,16,46,.45),inset 0 0 30px rgba(200,16,46,.15)}
+}
 
-    h1 span { color: var(--red-bright); }
+.sep-line{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--edge2),transparent)}
 
-    .subtitle {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #aaaaaa;
-      margin-top: 0.4rem;
-    }
+.hsl-badge img{width:52px;height:52px;object-fit:contain;opacity:.6;filter:brightness(1.2)}
 
-    .updated {
-      font-size: 0.75rem;
-      color: #777777;
-      margin-top: 0.9rem;
-      letter-spacing: 0.04em;
-    }
+.hero-copy{flex:1;min-width:0}
 
-    /* ---- Nav Tabs ---- */
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      background: var(--bg-subtle);
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-    }
+.hero-eyebrow{
+  font-family:'Share Tech Mono',monospace;
+  font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--red);margin-bottom:.4rem;
+}
 
-    .tab {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.9rem 1.6rem;
-      border: none;
-      border-bottom: 3px solid transparent;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.15s;
-      margin-bottom: -1px;
-    }
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,7vw,5.5rem);
+  line-height:.88;letter-spacing:.04em;
+}
+.hero-title .r{color:var(--red2)}
+.hero-title .w{color:#fff}
+.hero-title .d{color:var(--dim);font-size:60%}
 
-    .tab:hover { color: var(--dark); }
+.hero-sub{
+  margin-top:.6rem;
+  font-size:.85rem;font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);
+}
 
-    .tab.active {
-      color: var(--red);
-      border-bottom-color: var(--red);
-      background: var(--bg);
-    }
+.hero-meta{margin-left:auto;text-align:right;flex-shrink:0}
+.meta-chip{
+  display:inline-block;
+  background:rgba(200,16,46,.1);border:1px solid rgba(200,16,46,.3);
+  border-radius:4px;padding:.3rem .8rem;
+  font-family:'Share Tech Mono',monospace;font-size:.65rem;
+  letter-spacing:.06em;color:var(--dim);
+}
+.meta-chip.live{
+  background:rgba(38,194,129,.1);border-color:rgba(38,194,129,.3);
+  color:var(--green);
+  animation:blink 1.8s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+.meta-sub{margin-top:.35rem;font-size:.65rem;color:var(--faint);letter-spacing:.05em;font-family:'Share Tech Mono',monospace}
 
-    /* ---- Sections ---- */
-    section {
-      display: none;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 2rem 1rem 4rem;
-      animation: fadeIn 0.25s ease;
-    }
+/* ═══════════════════════════════════════════════════════════
+   SEASON SWITCHER
+═══════════════════════════════════════════════════════════ */
+.season-switcher{
+  display:flex;justify-content:center;
+  background:var(--surface);
+  border-bottom:1px solid var(--edge);
+  gap:0;
+}
 
-    section.active { display: block; }
+.ss-btn{
+  position:relative;font-family:'Bebas Neue',sans-serif;
+  font-size:1.05rem;letter-spacing:.18em;
+  padding:1rem 3.5rem;border:none;
+  background:transparent;color:var(--faint);
+  cursor:pointer;transition:color .2s;
+}
+.ss-btn::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:var(--red);transform:scaleX(0);transition:transform .25s cubic-bezier(.4,0,.2,1);
+}
+.ss-btn .tag{
+  position:absolute;top:.55rem;right:1rem;
+  background:var(--gold);color:#000;
+  font-family:'Rajdhani',sans-serif;font-size:.55rem;font-weight:700;
+  letter-spacing:.08em;padding:.1rem .35rem;border-radius:2px;
+}
+.ss-btn:hover{color:var(--dim)}
+.ss-btn.active{color:#fff}
+.ss-btn.active::before{transform:scaleX(1)}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+/* ═══════════════════════════════════════════════════════════
+   TAB BAR
+═══════════════════════════════════════════════════════════ */
+.tab-bar{
+  background:var(--panel);
+  border-bottom:1px solid var(--edge);
+  display:flex;justify-content:center;flex-wrap:wrap;
+}
+.tb-btn{
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.8rem;
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:.75rem 1.5rem;border:none;
+  border-bottom:2px solid transparent;
+  background:transparent;color:var(--faint);
+  cursor:pointer;transition:all .15s;
+}
+.tb-btn:hover{color:var(--dim)}
+.tb-btn.active{color:#fff;border-bottom-color:var(--red)}
 
-    .section-title {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 800;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--dark);
-      margin-bottom: 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
+/* ═══════════════════════════════════════════════════════════
+   SECTIONS
+═══════════════════════════════════════════════════════════ */
+.pane{display:none;max-width:1160px;margin:0 auto;padding:2.5rem 1rem 6rem;animation:rise .3s ease}
+.pane.active{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-    .section-title::before {
-      content: '';
-      width: 4px;
-      height: 1.2rem;
-      background: var(--red);
-      border-radius: 2px;
-    }
+/* section heading row */
+.sh{display:flex;align-items:center;gap:.9rem;margin-bottom:1.8rem}
+.sh-icon{
+  width:34px;height:34px;border-radius:5px;
+  background:var(--red);display:flex;align-items:center;
+  justify-content:center;font-size:1rem;flex-shrink:0;
+}
+.sh-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.9rem;
+  letter-spacing:.06em;line-height:1;
+}
+.sh-sub{font-size:.75rem;color:var(--dim);letter-spacing:.1em;margin-left:.3rem}
+.sh-rule{flex:1;height:1px;background:linear-gradient(to right,var(--edge2),transparent)}
 
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
+/* ── filter strip ──────────────────────────────── */
+.fstrip{display:flex;gap:.35rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.fb{
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.72rem;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:.28rem .85rem;border-radius:3px;
+  border:1px solid var(--edge2);background:transparent;
+  color:var(--faint);cursor:pointer;transition:all .12s;white-space:nowrap;
+}
+.fb:hover{color:var(--dim);border-color:var(--faint)}
+.fb.on{background:var(--red);color:#fff;border-color:var(--red)}
 
-    /* ---- Tables ---- */
-    .table-wrap {
-      overflow-x: auto;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
+/* ═══════════════════════════════════════════════════════════
+   SPARTAN BANNER
+═══════════════════════════════════════════════════════════ */
+.spartan-banner{
+  display:flex;align-items:center;gap:1.5rem;
+  background:linear-gradient(135deg,rgba(200,16,46,.12),rgba(200,16,46,.04));
+  border:1px solid rgba(200,16,46,.3);border-left:4px solid var(--red);
+  border-radius:7px;padding:1.3rem 1.6rem;margin-bottom:1.6rem;
+  position:relative;overflow:hidden;
+}
+.spartan-banner::after{
+  content:'';position:absolute;right:-20px;top:-20px;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,16,46,.12),transparent 70%);
+}
+.sb-logo{width:60px;height:60px;object-fit:contain;flex-shrink:0}
+.sb-text h2{font-family:'Bebas Neue',sans-serif;font-size:1.65rem;letter-spacing:.06em;line-height:1;color:#fff}
+.sb-text p{font-size:.78rem;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-top:.2rem}
+.sb-stat{margin-left:auto;text-align:center;flex-shrink:0}
+.sb-stat .n{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;color:var(--red2);line-height:1}
+.sb-stat .l{font-size:.62rem;color:var(--dim);letter-spacing:.12em;text-transform:uppercase}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-    }
+/* ═══════════════════════════════════════════════════════════
+   TABLES
+═══════════════════════════════════════════════════════════ */
+.tw{overflow-x:auto;border-radius:7px;border:1px solid var(--edge);background:var(--panel)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+thead tr{background:rgba(200,16,46,.06);border-bottom:1px solid var(--edge2)}
+th{
+  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.68rem;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--faint);
+  padding:.65rem 1rem;text-align:left;white-space:nowrap;
+}
+th.r,td.r{text-align:right}
+td{padding:.62rem 1rem;border-bottom:1px solid rgba(39,39,39,.9);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr{transition:background .1s}
+tbody tr:hover{background:rgba(200,16,46,.045)}
 
-    thead tr {
-      background: var(--bg-subtle);
-      border-bottom: 1px solid var(--border);
-    }
+/* Spartan row */
+.sr{background:rgba(200,16,46,.07)!important}
+.sr td:first-child{border-left:3px solid var(--red);padding-left:calc(1rem - 3px)}
+.sr:hover{background:rgba(200,16,46,.12)!important}
 
-    th {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 0.7rem 1rem;
-      text-align: left;
-    }
+/* rank */
+td.rk{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;color:var(--faint);width:2.2rem;padding-right:.4rem}
+.rk1{color:var(--gold)!important}
+.rk2{color:#b0b0b0!important}
+.rk3{color:#c07a30!important}
 
-    th.num { text-align: right; }
+/* player cell */
+.pc{display:flex;flex-direction:column;gap:2px}
+.pn{font-weight:700;color:var(--text)}
+.pn.s{color:#fff}
+.pt{font-size:.64rem;font-family:'Share Tech Mono',monospace;color:var(--faint)}
+.pt.s{color:var(--red);font-weight:700}
 
-    td {
-      padding: 0.65rem 1rem;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-    }
+/* key stats */
+.pts-val{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;color:var(--red2)}
+.g-val{font-weight:700;color:var(--text)}
+.gp-val{color:var(--faint);font-size:.82rem}
 
-    td.num { text-align: right; font-variant-numeric: tabular-nums; }
+/* standings */
+.team-name{font-weight:700}
+.spartan-tag{
+  font-family:'Share Tech Mono',monospace;font-size:.58rem;
+  color:var(--red);letter-spacing:.1em;margin-left:.4rem;
+}
+.pts-big{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--red2)}
+.w-val{color:var(--green);font-weight:700}
+.l-val{color:var(--red);font-weight:700}
 
-    tbody tr:last-child td { border-bottom: none; }
-    tbody tr { transition: background 0.12s; }
-    tbody tr:hover { background: var(--red-light); }
+/* game results */
+.score{
+  font-family:'Bebas Neue',sans-serif;font-size:1.2rem;
+  white-space:nowrap;letter-spacing:.04em;
+}
+.score.win{color:var(--green)}
+.score.loss{color:var(--red2)}
+.score.tie{color:var(--dim)}
+.date-cell{font-family:'Share Tech Mono',monospace;font-size:.68rem;color:var(--faint);white-space:nowrap}
+.box-btn{
+  font-family:'Share Tech Mono',monospace;font-size:.62rem;letter-spacing:.06em;
+  color:var(--faint);text-decoration:none;
+  border:1px solid var(--edge2);padding:.18rem .55rem;border-radius:3px;
+  transition:all .12s;white-space:nowrap;
+}
+.box-btn:hover{color:var(--red2);border-color:rgba(200,16,46,.5)}
 
-    /* Rank */
-    .rank {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      color: var(--muted);
-      font-size: 0.85rem;
-      width: 2.5rem;
-    }
+/* PO badge on games */
+.po-badge{
+  display:inline-block;
+  background:linear-gradient(135deg,#7a5c00,var(--gold));
+  color:#000;font-family:'Rajdhani',sans-serif;font-size:.58rem;font-weight:700;
+  letter-spacing:.1em;padding:.1rem .4rem;border-radius:2px;margin-left:.4rem;
+  vertical-align:middle;
+}
 
-    .rank.top { color: var(--gold); }
+/* ═══════════════════════════════════════════════════════════
+   EMPTY / LOADING
+═══════════════════════════════════════════════════════════ */
+.empty{text-align:center;padding:5rem 2rem;color:var(--faint)}
+.empty .ico{font-size:2.8rem;margin-bottom:1rem;opacity:.4}
+.empty p{font-family:'Rajdhani',sans-serif;font-size:.95rem;letter-spacing:.06em;text-transform:uppercase}
 
-    /* Player name */
-    .player-name { font-weight: 600; color: var(--text); }
-    .player-name.spartan { color: var(--dark); }
-
-    .team-badge { font-size: 0.72rem; color: var(--muted); margin-top: 1px; }
-    .team-badge.spartan { color: var(--red); font-weight: 600; }
-
-    /* Stat highlights */
-    .stat-pts {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--red);
-    }
-
-    .stat-g { color: var(--dark); font-weight: 700; }
-
-    /* Standings */
-    .pts-cell {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--red);
-    }
-
-    .spartan-row { background: var(--red-light) !important; }
-    .spartan-row td { border-left: 3px solid var(--red); }
-    .spartan-row:hover { background: #fae8ea !important; }
-
-    /* Games */
-    .game-result {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      color: var(--dark);
-    }
-
-    .w { color: var(--green); }
-    .l { color: var(--red); }
-    .t { color: var(--muted); }
-
-    a.game-link {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      border: 1px solid var(--border-mid);
-      padding: 0.2rem 0.5rem;
-      border-radius: 3px;
-      transition: all 0.15s;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-    }
-
-    a.game-link:hover { color: var(--red); border-color: var(--red); }
-
-    /* Filter bar */
-    .filter-bar {
-      display: flex;
-      gap: 0.4rem;
-      margin-bottom: 1.2rem;
-      flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.85rem;
-      border-radius: 3px;
-      border: 1px solid var(--border-mid);
-      background: transparent;
-      color: var(--muted-mid);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .filter-btn:hover { color: var(--dark); border-color: var(--muted); }
-    .filter-btn.active {
-      background: var(--red);
-      color: #fff;
-      border-color: var(--red);
-    }
-
-    /* Loading / error */
-    .state-msg {
-      text-align: center;
-      padding: 4rem 2rem;
-      color: var(--muted);
-      font-size: 1rem;
-    }
-
-    .state-msg .icon { font-size: 3rem; margin-bottom: 1rem; }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      th, td { padding: 0.55rem 0.6rem; }
-      .hide-mobile { display: none; }
-    }
-  </style>
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════ */
+@media(max-width:700px){
+  .hero-inner{gap:1rem;flex-wrap:wrap}
+  .hero-meta{display:none}
+  .sep-line,.hsl-badge{display:none}
+  .logo-ring{width:64px;height:64px}
+  .logo-ring img{width:50px;height:50px}
+  th,td{padding:.5rem .55rem}
+  .hide-sm{display:none}
+  .ss-btn{padding:.9rem 2rem}
+}
+</style>
 </head>
 <body>
-<div class="rink-lines"></div>
 <main>
-  <header>
-    <div class="logo-wrap">
-      <img
-        src="https://cloud3.rampinteractive.com/hsleague/images/team-logos/caaee3cc-f4e6-462c-96da-8134b5455907_Spartan Logo.png"
-        alt="Spartan Hockey Academy"
-        onerror="this.parentElement.innerHTML='⚔️'"
-      />
-    </div>
-    <h1><span>Spartan</span> Hockey</h1>
-    <div class="subtitle">2014 Major Division · HSL</div>
-    <div class="updated" id="updated-time">Loading...</div>
-  </header>
 
-  <div class="tabs">
-    <button class="tab active" onclick="showTab('spartan', this)">Spartan Leaders</button>
-    <button class="tab" onclick="showTab('league', this)">League Leaders</button>
-    <button class="tab" onclick="showTab('standings', this)">Standings</button>
-    <button class="tab" onclick="showTab('games', this)">Games</button>
+<!-- ═══ HERO ═══ -->
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-logos">
+      <div class="logo-ring">
+        <img id="spartan-logo"
+          src="https://cloud3.rampinteractive.com/hsleague/images/team-logos/caaee3cc-f4e6-462c-96da-8134b5455907_Spartan Logo.png"
+          alt="Spartan" onerror="this.parentElement.innerHTML='⚔️'"/>
+      </div>
+      <div class="sep-line"></div>
+      <div class="hsl-badge">
+        <img src="https://cloud3.rampinteractive.com/hsleague/css/img/assocLogo.svg"
+             alt="HSL" onerror="this.style.display='none'"/>
+      </div>
+    </div>
+
+    <div class="hero-copy">
+      <div class="hero-eyebrow">Hockey Super League · 2025–26 Season</div>
+      <div class="hero-title">
+        <span class="r">Spartan</span><br>
+        <span class="w">Hockey</span><br>
+        <span class="d">Stats Hub</span>
+      </div>
+      <div class="hero-sub">2014 Major &nbsp;·&nbsp; 2018 Major</div>
+    </div>
+
+    <div class="hero-meta">
+      <div class="meta-chip" id="updated-chip">Loading…</div>
+      <div class="meta-sub" id="games-chip"></div>
+    </div>
   </div>
+</header>
 
-  <!-- Spartan Leaders -->
-  <section id="tab-spartan" class="active">
-    <div class="section-title">Spartan Hockey Academy — 15M</div>
-    <div id="spartan-content" class="state-msg"><div class="icon">⏳</div>Loading stats...</div>
-  </section>
+<!-- ═══ SEASON SWITCHER ═══ -->
+<div class="season-switcher">
+  <button class="ss-btn active" id="ss-rs" onclick="setSeason('rs')">
+    Regular Season
+  </button>
+  <button class="ss-btn" id="ss-po" onclick="setSeason('po')">
+    Playoffs
+    <span class="tag" id="po-tag" style="display:none">LIVE</span>
+  </button>
+</div>
 
-  <!-- League Leaders -->
-  <section id="tab-league">
-    <div class="section-title">League Scoring Leaders</div>
-    <div class="filter-bar" id="league-filter"></div>
-    <div id="league-content" class="state-msg"><div class="icon">⏳</div>Loading stats...</div>
-  </section>
+<!-- ═══ TAB BAR ═══ -->
+<div class="tab-bar">
+  <button class="tb-btn active" id="tb-spartan" onclick="setTab('spartan')">⚔️ Spartan</button>
+  <button class="tb-btn" id="tb-league"  onclick="setTab('league')">🏒 League Leaders</button>
+  <button class="tb-btn" id="tb-stand"   onclick="setTab('stand')">📊 Standings</button>
+  <button class="tb-btn" id="tb-games"   onclick="setTab('games')">📅 Games</button>
+</div>
 
-  <!-- Standings -->
-  <section id="tab-standings">
-    <div class="section-title">Division Standings</div>
-    <div id="standings-content" class="state-msg"><div class="icon">⏳</div>Loading stats...</div>
-  </section>
-
-  <!-- Games -->
-  <section id="tab-games">
-    <div class="section-title">Game Results</div>
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterGames('all', this)">All Games</button>
-      <button class="filter-btn" onclick="filterGames('spartan', this)">Spartan Only</button>
+<!-- ═══ SPARTAN PANE ═══ -->
+<div class="pane active" id="pane-spartan">
+  <div class="sh">
+    <div class="sh-icon">⚔️</div>
+    <span class="sh-title">Spartan Leaders</span>
+    <span class="sh-sub" id="sp-sub"></span>
+    <div class="sh-rule"></div>
+  </div>
+  <div class="spartan-banner">
+    <img class="sb-logo"
+      src="https://cloud3.rampinteractive.com/hsleague/images/team-logos/caaee3cc-f4e6-462c-96da-8134b5455907_Spartan Logo.png"
+      alt="Spartan" onerror="this.style.display='none'"/>
+    <div class="sb-text">
+      <h2>Spartan Hockey Academy</h2>
+      <p id="sp-banner-sub">Combined stats across all divisions</p>
     </div>
-    <div id="games-content" class="state-msg"><div class="icon">⏳</div>Loading stats...</div>
-  </section>
+    <div class="sb-stat">
+      <div class="n" id="sp-count">—</div>
+      <div class="l">Players</div>
+    </div>
+  </div>
+  <div id="sp-body"><div class="empty"><div class="ico">⏳</div><p>Loading…</p></div></div>
+</div>
+
+<!-- ═══ LEAGUE PANE ═══ -->
+<div class="pane" id="pane-league">
+  <div class="sh">
+    <div class="sh-icon">🏒</div>
+    <span class="sh-title">League Scoring Leaders</span>
+    <div class="sh-rule"></div>
+  </div>
+  <div class="fstrip" id="lg-filter"></div>
+  <div id="lg-body"><div class="empty"><div class="ico">⏳</div><p>Loading…</p></div></div>
+</div>
+
+<!-- ═══ STANDINGS PANE ═══ -->
+<div class="pane" id="pane-stand">
+  <div class="sh">
+    <div class="sh-icon">📊</div>
+    <span class="sh-title">Standings</span>
+    <span class="sh-sub" id="st-sub"></span>
+    <div class="sh-rule"></div>
+  </div>
+  <div id="st-body"><div class="empty"><div class="ico">⏳</div><p>Loading…</p></div></div>
+</div>
+
+<!-- ═══ GAMES PANE ═══ -->
+<div class="pane" id="pane-games">
+  <div class="sh">
+    <div class="sh-icon">📅</div>
+    <span class="sh-title">Game Results</span>
+    <div class="sh-rule"></div>
+  </div>
+  <div class="fstrip">
+    <button class="fb on" id="gf-all"     onclick="setGF('all',this)">All Games</button>
+    <button class="fb"    id="gf-spartan" onclick="setGF('spartan',this)">Spartan Only</button>
+  </div>
+  <div id="gm-body"><div class="empty"><div class="ico">⏳</div><p>Loading…</p></div></div>
+</div>
+
 </main>
 
 <script>
-  const SPARTAN_TEAM_IDS = ["294811", "294868"];
-  let allData = null;
-  let allGames = [];
-  let leagueFilter = 'all';
+/* ─────────────────────────────────────────────────
+   STATE
+───────────────────────────────────────────────── */
+let D = null;                    // full data.json
+let season = 'rs';               // 'rs' | 'po'
+let tab    = 'spartan';
+let lgTeam = 'all';
+let gmFilt = 'all';
 
-  // ---- Tab switching ----
-  function showTab(name, btn) {
-    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
-    btn.classList.add('active');
-  }
+const sids = () => season === 'rs'
+  ? (D.spartan_team_ids_rs || [])
+  : (D.spartan_team_ids_po || []);
 
-  // ---- Load data ----
-  async function loadData() {
-    try {
-      const res = await fetch('data.json?_=' + Date.now());
-      if (!res.ok) throw new Error('No data yet');
-      allData = await res.json();
-      render();
-    } catch (e) {
-      const msg = `<div class="state-msg"><div class="icon">🚧</div>Stats not available yet. Run the scraper first to generate data.json.</div>`;
-      ['spartan-content','league-content','standings-content','games-content'].forEach(id => {
-        document.getElementById(id).innerHTML = msg;
-      });
-      document.getElementById('updated-time').textContent = 'No data loaded';
-    }
-  }
+const sd = () => season === 'rs' ? D.regular_season : D.playoffs;
 
-  function render() {
-    document.getElementById('updated-time').textContent =
-      'Last updated: ' + allData.updated + ' · ' + allData.games_processed + ' games processed';
-    renderSpartan();
-    renderLeague();
-    renderStandings();
-    renderGames('all');
-  }
+/* ─────────────────────────────────────────────────
+   LOAD
+───────────────────────────────────────────────── */
+async function boot(){
+  try{
+    const r = await fetch('data.json?_='+Date.now());
+    if(!r.ok) throw 0;
+    D = await r.json();
 
-  // ---- Spartan leaders ----
-  function renderSpartan() {
-    const players = allData.spartan_leaders;
-    if (!players || players.length === 0) {
-      document.getElementById('spartan-content').innerHTML = '<div class="state-msg">No Spartan stats yet.</div>';
-      return;
-    }
-    document.getElementById('spartan-content').innerHTML = `
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>RNK</th>
-            <th>#</th>
-            <th>Player</th>
-            <th class="num">GP</th>
-            <th class="num">G</th>
-            <th class="num">A</th>
-            <th class="num">PTS</th>
-            <th class="num hide-mobile">PIM</th>
-          </tr></thead>
-          <tbody>
-            ${players.map((p, i) => `
-              <tr>
-                <td class="rank ${i < 3 ? 'top' : ''}">${i < 3 ? ['①','②','③'][i] : i+1}</td>
-                <td class="muted">${p.jersey}</td>
-                <td><div class="player-name spartan">${p.name}</div></td>
-                <td class="num">${p.gp}</td>
-                <td class="num stat-g">${p.g}</td>
-                <td class="num">${p.a}</td>
-                <td class="num stat-pts">${p.pts}</td>
-                <td class="num hide-mobile">${p.pim}</td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
-      </div>`;
-  }
+    const rs = D.regular_season||{}, po = D.playoffs||{};
+    document.getElementById('updated-chip').textContent =
+      '🕐 ' + (D.updated||'unknown');
+    document.getElementById('games-chip').textContent =
+      `RS: ${rs.games_processed||0} games  ·  PO: ${po.games_processed||0} games`;
 
-  // ---- League leaders ----
-  function buildTeamFilter(leaders) {
-    const teams = [...new Set(leaders.map(p => p.team))].sort();
-    const bar = document.getElementById('league-filter');
-    bar.innerHTML =
-      `<button class="filter-btn active" onclick="setLeagueFilter('all',this)">All Teams</button>` +
-      teams.map(t =>
-        `<button class="filter-btn" onclick="setLeagueFilter('${t.replace(/'/g,"\\'")}',this)">${t}</button>`
-      ).join('');
-  }
-
-  function setLeagueFilter(team, btn) {
-    leagueFilter = team;
-    document.querySelectorAll('#league-filter .filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderLeague();
-  }
-
-  function renderLeague() {
-    let players = allData.leaders;
-    if (!players || players.length === 0) {
-      document.getElementById('league-content').innerHTML = '<div class="state-msg">No league stats yet.</div>';
-      return;
+    if((po.games_processed||0) > 0){
+      document.getElementById('po-tag').style.display = 'inline-block';
     }
 
-    if (document.getElementById('league-filter').innerHTML === '') {
-      buildTeamFilter(players);
-    }
-
-    if (leagueFilter !== 'all') {
-      players = players.filter(p => p.team === leagueFilter);
-    }
-
-    document.getElementById('league-content').innerHTML = `
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>RNK</th>
-            <th>#</th>
-            <th>Player</th>
-            <th class="num">GP</th>
-            <th class="num">G</th>
-            <th class="num">A</th>
-            <th class="num">PTS</th>
-            <th class="num hide-mobile">PIM</th>
-          </tr></thead>
-          <tbody>
-            ${players.slice(0, 100).map((p, i) => {
-              const isSpartan = SPARTAN_TEAM_IDS.includes(p.team_id);
-              return `<tr>
-                <td class="rank ${i < 3 ? 'top' : ''}">${i < 3 ? ['①','②','③'][i] : i+1}</td>
-                <td>${p.jersey}</td>
-                <td>
-                  <div class="player-name ${isSpartan ? 'spartan' : ''}">${p.name}</div>
-                  <div class="team-badge ${isSpartan ? 'spartan' : ''}">${p.team}</div>
-                </td>
-                <td class="num">${p.gp}</td>
-                <td class="num stat-g">${p.g}</td>
-                <td class="num">${p.a}</td>
-                <td class="num stat-pts">${p.pts}</td>
-                <td class="num hide-mobile">${p.pim}</td>
-              </tr>`;
-            }).join('')}
-          </tbody>
-        </table>
-      </div>`;
+    renderAll();
+  }catch(e){
+    const msg = `<div class="empty"><div class="ico">🚧</div>
+      <p>Run scrape.py to generate data.json</p></div>`;
+    ['sp-body','lg-body','st-body','gm-body'].forEach(id=>
+      document.getElementById(id).innerHTML = msg);
+    document.getElementById('updated-chip').textContent = 'No data yet';
   }
+}
 
-  // ---- Standings ----
-  function renderStandings() {
-    const teams = allData.standings;
-    if (!teams || teams.length === 0) {
-      document.getElementById('standings-content').innerHTML = '<div class="state-msg">No standings yet.</div>';
-      return;
-    }
-    document.getElementById('standings-content').innerHTML = `
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>RNK</th>
-            <th>Team</th>
-            <th class="num">GP</th>
-            <th class="num">W</th>
-            <th class="num">L</th>
-            <th class="num hide-mobile">OTL</th>
-            <th class="num hide-mobile">GF</th>
-            <th class="num hide-mobile">GA</th>
-            <th class="num">PTS</th>
-          </tr></thead>
-          <tbody>
-            ${teams.map((t, i) => {
-              const isSpartan = SPARTAN_TEAM_IDS.includes(t.team_id);
-              return `<tr class="${isSpartan ? 'spartan-row' : ''}">
-                <td class="rank ${i < 3 ? 'top' : ''}">${i+1}</td>
-                <td class="${isSpartan ? 'player-name spartan' : 'player-name'}">${t.team}</td>
-                <td class="num">${t.gp}</td>
-                <td class="num">${t.w}</td>
-                <td class="num">${t.l}</td>
-                <td class="num hide-mobile">${t.otl}</td>
-                <td class="num hide-mobile">${t.gf}</td>
-                <td class="num hide-mobile">${t.ga}</td>
-                <td class="num pts-cell">${t.pts}</td>
-              </tr>`;
-            }).join('')}
-          </tbody>
-        </table>
-      </div>`;
+/* ─────────────────────────────────────────────────
+   NAV
+───────────────────────────────────────────────── */
+function setSeason(s){
+  season = s; lgTeam = 'all';
+  ['rs','po'].forEach(x=>document.getElementById('ss-'+x).classList.toggle('active',x===s));
+  document.getElementById('lg-filter').innerHTML = '';
+  renderAll();
+}
+
+function setTab(t){
+  tab = t;
+  ['spartan','league','stand','games'].forEach(x=>{
+    document.getElementById('tb-'+x)?.classList.toggle('active', x===t);
+    // tb-league special
+    document.getElementById('tb-'+x) ||
+    document.getElementById('tb-league')?.classList.toggle('active', x==='league' && t==='league');
+  });
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pane-'+t).classList.add('active');
+}
+
+function setGF(f,btn){
+  gmFilt = f;
+  document.querySelectorAll('#pane-games .fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderGames();
+}
+
+/* ─────────────────────────────────────────────────
+   RENDER ALL
+───────────────────────────────────────────────── */
+function renderAll(){
+  const isPO = season==='po';
+  document.getElementById('sp-sub').textContent  = isPO ? '— Playoffs' : '— Regular Season';
+  document.getElementById('st-sub').textContent  = isPO ? '— 2018 Major' : '— 2014 Major';
+  document.getElementById('sp-banner-sub').textContent = isPO
+    ? 'Playoff combined stats · all divisions'
+    : 'Regular season combined stats · 2014 Major & 2018 Major';
+  renderSpartan(); renderLeague(); renderStandings(); renderGames();
+}
+
+/* ─────────────────────────────────────────────────
+   RANK CELL
+───────────────────────────────────────────────── */
+function rkCell(i){
+  const cls = i===0?'rk1':i===1?'rk2':i===2?'rk3':'';
+  const lbl = i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1);
+  return `<td class="rk ${cls}">${lbl}</td>`;
+}
+
+/* ─────────────────────────────────────────────────
+   SPARTAN LEADERS
+───────────────────────────────────────────────── */
+function renderSpartan(){
+  const players = sd().spartan_leaders||[];
+  document.getElementById('sp-count').textContent = players.length || '—';
+  if(!players.length){
+    document.getElementById('sp-body').innerHTML =
+      `<div class="empty"><div class="ico">🏒</div>
+       <p>No Spartan stats yet${season==='po'?' — playoffs in progress':''}</p></div>`;
+    return;
   }
+  document.getElementById('sp-body').innerHTML = `
+    <div class="tw"><table>
+      <thead><tr>
+        <th>RK</th><th>#</th><th>Player</th>
+        <th class="r">GP</th><th class="r">G</th><th class="r">A</th>
+        <th class="r">PTS</th><th class="r hide-sm">PIM</th>
+      </tr></thead>
+      <tbody>
+        ${players.map((p,i)=>`
+          <tr>
+            ${rkCell(i)}
+            <td style="color:var(--faint);font-family:'Share Tech Mono',monospace;font-size:.8rem">${p.jersey}</td>
+            <td><div class="pc">
+              <span class="pn s">${p.name}</span>
+            </div></td>
+            <td class="r gp-val">${p.gp}</td>
+            <td class="r g-val">${p.g}</td>
+            <td class="r">${p.a}</td>
+            <td class="r pts-val">${p.pts}</td>
+            <td class="r hide-sm" style="color:var(--faint)">${p.pim}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table></div>`;
+}
 
-  // ---- Games ----
-  function filterGames(filter, btn) {
-    document.querySelectorAll('#tab-games .filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderGames(filter);
+/* ─────────────────────────────────────────────────
+   LEAGUE LEADERS
+───────────────────────────────────────────────── */
+function buildLgFilter(players){
+  const teams = [...new Set(players.map(p=>p.team))].sort();
+  document.getElementById('lg-filter').innerHTML =
+    `<button class="fb ${lgTeam==='all'?'on':''}" onclick="setLgTeam('all',this)">All Teams</button>`+
+    teams.map(t=>`<button class="fb ${lgTeam===t?'on':''}" onclick="setLgTeam(${JSON.stringify(t)},this)">${t}</button>`).join('');
+}
+function setLgTeam(t,btn){
+  lgTeam=t;
+  document.querySelectorAll('#lg-filter .fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderLeague();
+}
+function renderLeague(){
+  let players = sd().leaders||[];
+  if(!players.length){
+    document.getElementById('lg-body').innerHTML =
+      `<div class="empty"><div class="ico">🏒</div><p>No league stats yet</p></div>`;
+    return;
   }
+  if(!document.getElementById('lg-filter').innerHTML) buildLgFilter(players);
+  if(lgTeam!=='all') players=players.filter(p=>p.team===lgTeam);
+  const ids = sids();
+  document.getElementById('lg-body').innerHTML = `
+    <div class="tw"><table>
+      <thead><tr>
+        <th>RK</th><th>#</th><th>Player</th>
+        <th class="r">GP</th><th class="r">G</th><th class="r">A</th>
+        <th class="r">PTS</th><th class="r hide-sm">PIM</th>
+      </tr></thead>
+      <tbody>
+        ${players.slice(0,120).map((p,i)=>{
+          const sp = ids.includes(p.team_id);
+          return `<tr class="${sp?'sr':''}">
+            ${rkCell(i)}
+            <td style="color:var(--faint);font-family:'Share Tech Mono',monospace;font-size:.8rem">${p.jersey}</td>
+            <td><div class="pc">
+              <span class="pn${sp?' s':''}">${p.name}</span>
+              <span class="pt${sp?' s':''}">${p.team}</span>
+            </div></td>
+            <td class="r gp-val">${p.gp}</td>
+            <td class="r g-val">${p.g}</td>
+            <td class="r">${p.a}</td>
+            <td class="r pts-val">${p.pts}</td>
+            <td class="r hide-sm" style="color:var(--faint)">${p.pim}</td>
+          </tr>`;}).join('')}
+      </tbody>
+    </table></div>`;
+}
 
-  function renderGames(filter) {
-    allGames = allData.games || [];
-    let games = [...allGames].reverse();
-
-    if (filter === 'spartan') {
-      games = games.filter(g =>
-        g.home_team.includes('Spartan') || g.away_team.includes('Spartan')
-      );
-    }
-
-    if (games.length === 0) {
-      document.getElementById('games-content').innerHTML = '<div class="state-msg">No games yet.</div>';
-      return;
-    }
-
-    document.getElementById('games-content').innerHTML = `
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>Date</th>
-            <th>Home</th>
-            <th class="num">Score</th>
-            <th>Away</th>
-            <th></th>
-          </tr></thead>
-          <tbody>
-            ${games.map(g => {
-              const hSpartan = g.home_team.includes('Spartan') && g.home_team.includes('15M');
-              const aSpartan = g.away_team.includes('Spartan') && g.away_team.includes('15M');
-              let resultClass = '';
-              if (hSpartan) resultClass = g.home_score > g.away_score ? 'w' : g.home_score < g.away_score ? 'l' : 't';
-              if (aSpartan) resultClass = g.away_score > g.home_score ? 'w' : g.away_score < g.home_score ? 'l' : 't';
-              return `<tr>
-                <td style="font-size:0.8rem;color:var(--muted)">${g.date}</td>
-                <td class="${hSpartan ? 'player-name spartan' : ''}" style="font-size:0.88rem">${g.home_team}</td>
-                <td class="num game-result ${resultClass}">${g.home_score} – ${g.away_score}</td>
-                <td class="${aSpartan ? 'player-name spartan' : ''}" style="font-size:0.88rem">${g.away_team}</td>
-                <td><a class="game-link" href="${g.game_url}" target="_blank">BOX</a></td>
-              </tr>`;
-            }).join('')}
-          </tbody>
-        </table>
-      </div>`;
+/* ─────────────────────────────────────────────────
+   STANDINGS
+───────────────────────────────────────────────── */
+function renderStandings(){
+  const teams = sd().standings||[];
+  const ids   = sids();
+  if(!teams.length){
+    document.getElementById('st-body').innerHTML =
+      `<div class="empty"><div class="ico">📊</div><p>No standings yet</p></div>`;
+    return;
   }
+  document.getElementById('st-body').innerHTML = `
+    <div class="tw"><table>
+      <thead><tr>
+        <th>RK</th><th>Team</th>
+        <th class="r">GP</th><th class="r">W</th><th class="r">L</th>
+        <th class="r hide-sm">OTL</th><th class="r hide-sm">GF</th>
+        <th class="r hide-sm">GA</th><th class="r">PTS</th>
+      </tr></thead>
+      <tbody>
+        ${teams.map((t,i)=>{
+          const sp = ids.includes(t.team_id);
+          return `<tr class="${sp?'sr':''}">
+            ${rkCell(i)}
+            <td>
+              <span class="team-name">${t.team}</span>
+              ${sp?`<span class="spartan-tag">SPARTAN</span>`:''}
+            </td>
+            <td class="r gp-val">${t.gp}</td>
+            <td class="r w-val">${t.w}</td>
+            <td class="r l-val">${t.l}</td>
+            <td class="r hide-sm" style="color:var(--faint)">${t.otl}</td>
+            <td class="r hide-sm">${t.gf}</td>
+            <td class="r hide-sm">${t.ga}</td>
+            <td class="r pts-big">${t.pts}</td>
+          </tr>`;}).join('')}
+      </tbody>
+    </table></div>`;
+}
 
-  loadData();
+/* ─────────────────────────────────────────────────
+   GAMES
+───────────────────────────────────────────────── */
+function renderGames(){
+  const ids = sids();
+  let games = [...(sd().games||[])].reverse();
+  if(gmFilt==='spartan'){
+    games = games.filter(g=>
+      g.home_team?.includes('Spartan') || g.away_team?.includes('Spartan')
+    );
+  }
+  if(!games.length){
+    document.getElementById('gm-body').innerHTML =
+      `<div class="empty"><div class="ico">📅</div><p>No games yet</p></div>`;
+    return;
+  }
+  document.getElementById('gm-body').innerHTML = `
+    <div class="tw"><table>
+      <thead><tr>
+        <th>Date</th><th>Home</th><th class="r">Score</th>
+        <th>Away</th><th></th>
+      </tr></thead>
+      <tbody>
+        ${games.map(g=>{
+          const hS = g.home_team?.includes('Spartan');
+          const aS = g.away_team?.includes('Spartan');
+          const isPO = g.game_url?.includes('hslchampionship');
+          let sCls = '';
+          if(hS) sCls = g.home_score>g.away_score?'win':g.home_score<g.away_score?'loss':'tie';
+          if(aS) sCls = g.away_score>g.home_score?'win':g.away_score<g.home_score?'loss':'tie';
+          return `<tr>
+            <td class="date-cell">${g.date||'—'}</td>
+            <td style="${hS?'color:#fff;font-weight:700':''}">${g.home_team}${isPO?'<span class="po-badge">PO</span>':''}</td>
+            <td class="r"><span class="score ${sCls}">${g.home_score} – ${g.away_score}</span></td>
+            <td style="${aS?'color:#fff;font-weight:700':''}">${g.away_team}</td>
+            <td><a class="box-btn" href="${g.game_url}" target="_blank">BOX</a></td>
+          </tr>`;}).join('')}
+      </tbody>
+    </table></div>`;
+}
+
+boot();
 </script>
 </body>
 </html>

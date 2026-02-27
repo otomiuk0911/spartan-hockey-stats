@@ -7,24 +7,35 @@ Usage:
   python scrape.py                # Both
 
 Strategy:
-  1. Try to discover game IDs from schedule pages (fast, ~20 requests)
-  2. If too few found (<10), fall back to windowed ID scan around known anchors
-  3. Incremental cache means reruns only fetch new games
+  1. Try schedule page discovery first (fast)
+  2. Fall back to tight windowed scan if < 50 IDs found
+  3. Incremental cache — reruns only fetch new games
 
 Regular Season  (hockeysuperleague.ca)
   23371  2014 Major  — all games + standings
-  23373  2015 Major  — Spartan games only
+  23373  2015 Major  — Spartan games only (moved to 23371 mid-season)
   32765  2018 Major  — Spartan games only
-  Anchor: 1626651  →  scan 1623000–1628000
+
+  NOTE: Spartan's 2015 Major players have links pointing to division 23371
+  even when the game URL is under 23373 (cross-division team move).
+  The parser accepts player links from ANY of our tracked divisions.
 
 Playoffs  (hslchampionship.ca  /gamesheet/ URLs)
   22196  2014 Major playoffs — all games + standings
   36713  2018 Major playoffs — Spartan games only
-  Anchor: 1830371  →  scan 1828000–1834000
 
 Spartan team IDs
   RS : 294811 (2014/2015 Major),  294868 (2018 Major)
   PO : 350513 (2014 Major champ), 294868 (2018 Major champ)
+
+Output data.json structure:
+  regular_season:
+    spartan_leaders_14  — 2014/15 Major Spartan players only
+    spartan_leaders_18  — 2018 Major Spartan players only
+    leaders, standings, games
+  playoffs:
+    spartan_leaders_14, spartan_leaders_18
+    leaders, standings, games
 """
 
 import argparse
@@ -38,14 +49,22 @@ RS_BASE    = "https://hockeysuperleague.ca"
 RS_DIVS    = ["23371", "23373", "32765"]
 RS_PRIME   = "23371"
 RS_SPARTAN = {"294811", "294868"}
-RS_SCAN    = (1624900, 1627000)   # anchored around known ID 1626651
+RS_SPARTAN_14 = {"294811"}   # 2014/15 Major
+RS_SPARTAN_18 = {"294868"}   # 2018 Major
+RS_SCAN    = (1624900, 1627000)
 
 # ── Playoffs ───────────────────────────────────────────────────────────────
 PO_BASE    = "https://hslchampionship.ca"
 PO_DIVS    = ["22196", "36713"]
 PO_PRIME   = "22196"
 PO_SPARTAN = {"350513", "294868"}
-PO_SCAN    = (1829000, 1833000)   # anchored around known IDs 1830371, 1830410
+PO_SPARTAN_14 = {"350513"}
+PO_SPARTAN_18 = {"294868"}
+PO_SCAN    = (1829000, 1833000)
+
+# ── All division IDs we care about (for cross-div player link matching) ────
+ALL_RS_DIVS = set(RS_DIVS)
+ALL_PO_DIVS = set(PO_DIVS)
 
 # ── Shared ─────────────────────────────────────────────────────────────────
 HEADERS    = {"User-Agent": "Mozilla/5.0 (compatible; HSL-stats-bot/1.0)"}
@@ -86,7 +105,12 @@ def discover_ids(base, div, link_pattern):
 
 
 # ── Parse one game ─────────────────────────────────────────────────────────
-def parse_game(gid, base, div, url_tmpl):
+def parse_game(gid, base, div, url_tmpl, all_div_ids):
+    """
+    Parse a game page. all_div_ids is the set of all division IDs we track
+    for this season — used to accept player links from any of our divisions
+    (handles cross-division team moves like 2015→2014 Major).
+    """
     url = f"{base}/{url_tmpl.format(div=div, gid=gid)}"
     try:
         resp = requests.get(url, headers=HEADERS, timeout=5)
@@ -101,6 +125,7 @@ def parse_game(gid, base, div, url_tmpl):
     if not sm:
         return None
 
+    # find player stat tables
     ptables = []
     for tbl in soup.find_all("table"):
         hr = tbl.find("tr")
@@ -111,8 +136,16 @@ def parse_game(gid, base, div, url_tmpl):
     if len(ptables) < 2:
         return None
 
-    if not any(f"/0/{div}/" in a["href"]
-               for tbl in ptables for a in tbl.find_all("a", href=True)):
+    # confirm this game belongs to at least one of our tracked divisions
+    # by finding player links that reference any of our division IDs
+    page_divs = set()
+    for tbl in ptables:
+        for a in tbl.find_all("a", href=True):
+            m2 = re.search(r'/team/\d+/0/(\d+)/(\d+)/player/(\d+)', a["href"])
+            if m2 and m2.group(1) in all_div_ids:
+                page_divs.add(m2.group(1))
+
+    if not page_divs:
         return None
 
     hs, as_ = int(sm.group(1)), int(sm.group(2))
@@ -147,10 +180,9 @@ def parse_game(gid, base, div, url_tmpl):
             pid, tid = "", ""
             lnk = cells[1].find("a", href=True)
             if lnk:
-                m2 = re.search(r'/team/\d+/0/(\d+)/(\d+)/player/(\d+)', lnk["href"])
-                if m2:
-                    if m2.group(1) != div: continue
-                    tid, pid = m2.group(2), m2.group(3)
+                m3 = re.search(r'/team/\d+/0/(\d+)/(\d+)/player/(\d+)', lnk["href"])
+                if m3 and m3.group(1) in all_div_ids:
+                    tid, pid = m3.group(2), m3.group(3)
 
             if tid:
                 if i == 0 and not gi["home_team_id"]:   gi["home_team_id"] = tid
@@ -184,6 +216,7 @@ def build_leaders(games):
     return sorted(p.values(), key=lambda x:(x["pts"],x["g"]), reverse=True)
 
 def build_spartan_leaders(games, spartan_ids):
+    """Combined stats for players on any of the given Spartan team IDs."""
     p = {}
     for g in games:
         for pl in g["players"]:
@@ -233,19 +266,18 @@ def run_scan(label, base, divs, prime, spartan_ids,
              url_tmpl, link_pattern, scan_range,
              processed_ids, cached_games):
 
-    print(f"\n{'='*60}")
-    print(f"  {label}")
-    print(f"{'='*60}")
+    all_div_ids = set(divs)
+    print(f"\n{'='*60}\n  {label}\n{'='*60}")
 
-    # Step 1: try schedule pages
+    # Step 1: try schedule page discovery
     candidate_ids = set()
     for div in divs:
         candidate_ids |= discover_ids(base, div, link_pattern)
 
-    # Step 2: if schedule pages didn't yield enough, fall back to window scan
-    print(f"\n  Schedule pages found {len(candidate_ids)} IDs", end="")
+    # Step 2: fall back to window scan if too few real IDs found
+    print(f"\n  Schedule pages: {len(candidate_ids)} IDs", end="")
     if len(candidate_ids) < 50:
-        print(f" — too few, falling back to window scan {scan_range}")
+        print(f" — falling back to window scan {scan_range}")
         candidate_ids = set(range(scan_range[0], scan_range[1] + 1))
     else:
         print()
@@ -258,12 +290,12 @@ def run_scan(label, base, divs, prime, spartan_ids,
     newly_proc = set()
 
     for i, gid in enumerate(new_ids):
-        if i > 0 and i % 200 == 0:
-            print(f"  ... {i}/{len(new_ids)} scanned, {len(new_games)} games found so far")
+        if i > 0 and i % 250 == 0:
+            print(f"  ... {i}/{len(new_ids)} scanned, {len(new_games)} games found")
 
         game = None
         for div in divs:
-            g = parse_game(gid, base, div, url_tmpl)
+            g = parse_game(gid, base, div, url_tmpl, all_div_ids)
             if not g:
                 continue
             both = {g["home_team_id"], g["away_team_id"]}
@@ -286,7 +318,7 @@ def run_scan(label, base, divs, prime, spartan_ids,
 
     all_games = cached_games + new_games
     all_proc  = processed_ids | newly_proc
-    print(f"\n  {label} done: {len(new_games)} new · {len(all_games)} total")
+    print(f"\n  Done: {len(new_games)} new · {len(all_games)} total")
     return all_games, all_proc
 
 
@@ -297,18 +329,20 @@ def write_output(rs_games, po_games):
         "spartan_team_ids_rs": list(RS_SPARTAN),
         "spartan_team_ids_po": list(PO_SPARTAN),
         "regular_season": {
-            "games_processed": len(rs_games),
-            "spartan_leaders": build_spartan_leaders(rs_games, RS_SPARTAN),
-            "leaders":         build_leaders(rs_games),
-            "standings":       build_standings(rs_games, RS_PRIME),
-            "games":           to_list(rs_games),
+            "games_processed":   len(rs_games),
+            "spartan_leaders_14": build_spartan_leaders(rs_games, RS_SPARTAN_14),
+            "spartan_leaders_18": build_spartan_leaders(rs_games, RS_SPARTAN_18),
+            "leaders":            build_leaders(rs_games),
+            "standings":          build_standings(rs_games, RS_PRIME),
+            "games":              to_list(rs_games),
         },
         "playoffs": {
-            "games_processed": len(po_games),
-            "spartan_leaders": build_spartan_leaders(po_games, PO_SPARTAN),
-            "leaders":         build_leaders(po_games),
-            "standings":       build_standings(po_games, PO_PRIME),
-            "games":           to_list(po_games),
+            "games_processed":   len(po_games),
+            "spartan_leaders_14": build_spartan_leaders(po_games, PO_SPARTAN_14),
+            "spartan_leaders_18": build_spartan_leaders(po_games, PO_SPARTAN_18),
+            "leaders":            build_leaders(po_games),
+            "standings":          build_standings(po_games, PO_PRIME),
+            "games":              to_list(po_games),
         },
     }
     os.makedirs("docs", exist_ok=True)
@@ -333,8 +367,7 @@ def main():
             RS_BASE, RS_DIVS, RS_PRIME, RS_SPARTAN,
             "division/0/{div}/game/view/{gid}",
             r'/game/view/(\d+)',
-            RS_SCAN,
-            rs_proc, rs_games)
+            RS_SCAN, rs_proc, rs_games)
 
     if args.mode in ("po", "both"):
         po_games, po_proc = run_scan(
@@ -342,8 +375,7 @@ def main():
             PO_BASE, PO_DIVS, PO_PRIME, PO_SPARTAN,
             "division/0/{div}/gamesheet/{gid}",
             r'/gamesheet/(\d+)',
-            PO_SCAN,
-            po_proc, po_games)
+            PO_SCAN, po_proc, po_games)
 
     save_cache(rs_proc, rs_games, po_proc, po_games)
     write_output(rs_games, po_games)

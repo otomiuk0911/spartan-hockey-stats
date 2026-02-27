@@ -244,7 +244,7 @@ def run_scan(label, base, divs, prime, spartan_ids,
 
     # Step 2: if schedule pages didn't yield enough, fall back to window scan
     print(f"\n  Schedule pages found {len(candidate_ids)} IDs", end="")
-    if len(candidate_ids) < 10:
+    if len(candidate_ids) < 50:
         print(f" — too few, falling back to window scan {scan_range}")
         candidate_ids = set(range(scan_range[0], scan_range[1] + 1))
     else:

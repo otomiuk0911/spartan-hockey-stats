@@ -1,14 +1,14 @@
-name: Scrape Regular Season
+name: Scrape Playoffs
 
 on:
   schedule:
-    - cron: '0 */6 * * *'   # every 6 hours
+    - cron: '30 */2 * * *'   # every 2 hours (playoffs move fast!)
   workflow_dispatch:          # manual trigger
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 60       # RS should finish in ~10 min
+    timeout-minutes: 45       # PO fewer games, should be ~5 min
     permissions:
       contents: write
 
@@ -22,14 +22,14 @@ jobs:
       - name: Install dependencies
         run: pip install requests beautifulsoup4
 
-      - name: Run scraper (regular season)
-        run: python scrape.py --mode rs
+      - name: Run scraper (playoffs)
+        run: python scrape.py --mode po
 
       - name: Commit updated data
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/data.json docs/game_cache.json
-          git diff --staged --quiet || git commit -m "chore: update regular season stats [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git diff --staged --quiet || git commit -m "chore: update playoff stats [$(date -u '+%Y-%m-%d %H:%M UTC')]"
           git pull --rebase origin main
           git push

@@ -400,20 +400,37 @@ td.rk{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;color:var(--faint);w
     <span class="sh-sub" id="sp-sub"></span>
     <div class="sh-rule"></div>
   </div>
+  <!-- 2014/15 Major section -->
   <div class="spartan-banner">
     <img class="sb-logo"
       src="https://cloud3.rampinteractive.com/hsleague/images/team-logos/caaee3cc-f4e6-462c-96da-8134b5455907_Spartan Logo.png"
       alt="Spartan" onerror="this.style.display='none'"/>
     <div class="sb-text">
       <h2>Spartan Hockey Academy</h2>
-      <p id="sp-banner-sub">Combined stats across all divisions</p>
+      <p id="sp-banner-sub-14">2014/15 Major · Combined Stats</p>
     </div>
     <div class="sb-stat">
-      <div class="n" id="sp-count">—</div>
+      <div class="n" id="sp-count-14">—</div>
       <div class="l">Players</div>
     </div>
   </div>
-  <div id="sp-body"><div class="empty"><div class="ico">⏳</div><p>Loading…</p></div></div>
+  <div id="sp-body-14"><div class="empty"><div class="ico">⏳</div><p>Loading…</p></div></div>
+
+  <!-- 2018 Major section -->
+  <div class="spartan-banner" style="margin-top:2rem">
+    <img class="sb-logo"
+      src="https://cloud3.rampinteractive.com/hsleague/images/team-logos/398fdbc1-806e-41a6-a990-74c0558b8f39_Spartan Logo.png"
+      alt="Spartan" onerror="this.style.display='none'"/>
+    <div class="sb-text">
+      <h2>Spartan Hockey Academy</h2>
+      <p id="sp-banner-sub-18">2018 Major · Combined Stats</p>
+    </div>
+    <div class="sb-stat">
+      <div class="n" id="sp-count-18">—</div>
+      <div class="l">Players</div>
+    </div>
+  </div>
+  <div id="sp-body-18"><div class="empty"><div class="ico">⏳</div><p>Loading…</p></div></div>
 </div>
 
 <!-- ═══ LEAGUE PANE ═══ -->
@@ -493,7 +510,7 @@ async function boot(){
   }catch(e){
     const msg = `<div class="empty"><div class="ico">🚧</div>
       <p>Run scrape.py to generate data.json</p></div>`;
-    ['sp-body','lg-body','st-body','gm-body'].forEach(id=>
+    ['sp-body-14','sp-body-18','lg-body','st-body','gm-body'].forEach(id=>
       document.getElementById(id).innerHTML = msg);
     document.getElementById('updated-chip').textContent = 'No data yet';
   }
@@ -553,38 +570,46 @@ function rkCell(i){
 /* ─────────────────────────────────────────────────
    SPARTAN LEADERS
 ───────────────────────────────────────────────── */
+function spartanTable(players, emptyMsg){
+  if(!players.length)
+    return `<div class="empty"><div class="ico">🏒</div><p>${emptyMsg}</p></div>`;
+  return `<div class="tw"><table>
+    <thead><tr>
+      <th>RK</th><th>#</th><th>Player</th>
+      <th class="r">GP</th><th class="r">G</th><th class="r">A</th>
+      <th class="r">PTS</th><th class="r hide-sm">PIM</th>
+    </tr></thead>
+    <tbody>
+      ${players.map((p,i)=>`
+        <tr>
+          ${rkCell(i)}
+          <td style="color:var(--faint);font-family:'Share Tech Mono',monospace;font-size:.8rem">${p.jersey}</td>
+          <td><div class="pc"><span class="pn s">${p.name}</span></div></td>
+          <td class="r gp-val">${p.gp}</td>
+          <td class="r g-val">${p.g}</td>
+          <td class="r">${p.a}</td>
+          <td class="r pts-val">${p.pts}</td>
+          <td class="r hide-sm" style="color:var(--faint)">${p.pim}</td>
+        </tr>`).join('')}
+    </tbody>
+  </table></div>`;
+}
+
 function renderSpartan(){
-  const players = sd().spartan_leaders||[];
-  document.getElementById('sp-count').textContent = players.length || '—';
-  if(!players.length){
-    document.getElementById('sp-body').innerHTML =
-      `<div class="empty"><div class="ico">🏒</div>
-       <p>No Spartan stats yet${season==='po'?' — playoffs in progress':''}</p></div>`;
-    return;
-  }
-  document.getElementById('sp-body').innerHTML = `
-    <div class="tw"><table>
-      <thead><tr>
-        <th>RK</th><th>#</th><th>Player</th>
-        <th class="r">GP</th><th class="r">G</th><th class="r">A</th>
-        <th class="r">PTS</th><th class="r hide-sm">PIM</th>
-      </tr></thead>
-      <tbody>
-        ${players.map((p,i)=>`
-          <tr>
-            ${rkCell(i)}
-            <td style="color:var(--faint);font-family:'Share Tech Mono',monospace;font-size:.8rem">${p.jersey}</td>
-            <td><div class="pc">
-              <span class="pn s">${p.name}</span>
-            </div></td>
-            <td class="r gp-val">${p.gp}</td>
-            <td class="r g-val">${p.g}</td>
-            <td class="r">${p.a}</td>
-            <td class="r pts-val">${p.pts}</td>
-            <td class="r hide-sm" style="color:var(--faint)">${p.pim}</td>
-          </tr>`).join('')}
-      </tbody>
-    </table></div>`;
+  const isPO = season==='po';
+  const s = sd();
+  const p14 = s.spartan_leaders_14||[];
+  const p18 = s.spartan_leaders_18||[];
+  const empty = isPO ? 'No playoff stats yet' : 'No stats yet';
+
+  document.getElementById('sp-banner-sub-14').textContent =
+    isPO ? '2014 Major · Playoffs' : '2014/15 Major · Regular Season';
+  document.getElementById('sp-banner-sub-18').textContent =
+    isPO ? '2018 Major · Playoffs' : '2018 Major · Regular Season';
+  document.getElementById('sp-count-14').textContent = p14.length || '—';
+  document.getElementById('sp-count-18').textContent = p18.length || '—';
+  document.getElementById('sp-body-14').innerHTML = spartanTable(p14, empty);
+  document.getElementById('sp-body-18').innerHTML = spartanTable(p18, empty);
 }
 
 /* ─────────────────────────────────────────────────

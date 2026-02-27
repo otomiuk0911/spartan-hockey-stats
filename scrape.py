@@ -1,10 +1,19 @@
 """
-HSL Hockey Super League - 2014 Major Division Stats Scraper
-Scans game IDs, totals up G/A/PTS/PIM per player,
-and writes results to docs/data.json for the website to display.
+HSL Hockey Super League - Spartan Hockey Academy Stats Scraper
 
-Incremental mode: already-processed game IDs are cached in docs/game_cache.json
-so re-runs only fetch new games instead of scanning the full ID range.
+Scans game IDs across THREE divisions:
+  - 23371 (2014 Major) - primary division, keep all games
+  - 23373 (2015 Major) - team played here early season, Spartan games only
+  - 32765 (2018 Major) - second son's division, Spartan games only
+
+SPARTAN_TEAM_IDS:
+  - 294811 (2014/2015 Major Spartan team)
+  - 294868 (2018 Major Spartan team)
+
+For each player, stats are combined across all divisions they played
+for a Spartan team, but stats from non-Spartan teams are excluded.
+
+Incremental mode: already-processed game IDs are cached in docs/game_cache.json.
 """
 
 import requests
@@ -15,15 +24,19 @@ import time
 import os
 from datetime import datetime
 
-DIVISION_ID  = "23371"
-SPARTAN_TEAM_ID = "350513"
-BASE_URL     = "https://hockeysuperleague.ca"
+# All divisions to scan
+DIVISION_IDS     = ["23371", "23373", "32765"]
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; HSL-stats-bot/1.0)"
-}
+# Our Spartan team IDs — one per division
+SPARTAN_TEAM_IDS = {"294811", "294868"}
 
-GAME_ID_START = 1625000
+# Primary division for standings
+PRIMARY_DIVISION = "23371"
+
+BASE_URL = "https://hockeysuperleague.ca"
+HEADERS  = {"User-Agent": "Mozilla/5.0 (compatible; HSL-stats-bot/1.0)"}
+
+GAME_ID_START = 1620000
 GAME_ID_END   = 1627500
 
 CACHE_FILE  = "docs/game_cache.json"
@@ -56,166 +69,158 @@ def save_cache(processed_ids, games):
 # ---------------------------------------------------------------------------
 
 def get_game_ids_to_scan(processed_ids):
-    all_ids  = set(range(GAME_ID_START, GAME_ID_END + 1))
-    new_ids  = sorted(all_ids - processed_ids)
+    all_ids = set(range(GAME_ID_START, GAME_ID_END + 1))
+    new_ids = sorted(all_ids - processed_ids)
     print(f"Total range: {len(all_ids)} IDs | Already processed: {len(processed_ids)} | New to scan: {len(new_ids)}")
     return new_ids
 
 
 def parse_game(game_id):
     """
-    Fetch and parse a single game page.
-    Returns a game dict on success, or None if the game should be skipped.
+    Try fetching the game under each division URL.
+    Accept the first one where player links inside the stat tables
+    actually match that division ID.
 
-    Division filter: we check that player links inside the stat tables
-    actually contain /0/23371/ — this is the only reliable way to confirm
-    the game belongs to our division, since the HSL site doesn't redirect
-    and always shows the full nav with all division IDs in the HTML.
+    Rules:
+    - 23371 (2014 Major): keep ALL games
+    - 23373 (2015 Major): only keep if a Spartan team is playing
+    - 32765 (2018 Major): only keep if a Spartan team is playing
     """
-    url = f"{BASE_URL}/division/0/{DIVISION_ID}/game/view/{game_id}"
-    try:
-        resp = requests.get(url, headers=HEADERS, timeout=15)
-        resp.raise_for_status()
-    except Exception:
-        return None
-
-    soup = BeautifulSoup(resp.text, "html.parser")
-    tables = soup.find_all("table")
-    if not tables:
-        return None
-
-    full_text = soup.get_text()
-
-    # Must be a Final game
-    score_match = re.search(r'(\d+)\s*[-–]\s*(\d+)\s*Final', full_text)
-    if not score_match:
-        return None
-
-    # Find player stat tables (columns: # Name G A PTS PIM)
-    player_tables = []
-    for table in tables:
-        header_row = table.find("tr")
-        if not header_row:
+    for div_id in DIVISION_IDS:
+        url = f"{BASE_URL}/division/0/{div_id}/game/view/{game_id}"
+        try:
+            resp = requests.get(url, headers=HEADERS, timeout=15)
+            resp.raise_for_status()
+        except Exception:
             continue
-        col_names = [th.get_text(strip=True).upper() for th in header_row.find_all(["th", "td"])]
-        if "G" in col_names and "A" in col_names and "PTS" in col_names:
-            player_tables.append(table)
 
-    if len(player_tables) < 2:
-        return None
+        soup   = BeautifulSoup(resp.text, "html.parser")
+        tables = soup.find_all("table")
+        if not tables:
+            continue
 
-    # --- KEY DIVISION FILTER ---
-    # Check that at least one player link in the tables actually contains
-    # /0/23371/ — this confirms it's a real division 23371 game.
-    # The nav sidebar links look like /team/11823/0/23371/... but those are
-    # outside the tables, so we only check links INSIDE the stat tables.
-    division_confirmed = False
-    for table in player_tables:
-        for link in table.find_all("a", href=True):
-            if f"/0/{DIVISION_ID}/" in link["href"]:
-                division_confirmed = True
-                break
-        if division_confirmed:
-            break
+        # Find player stat tables
+        player_tables = []
+        for table in tables:
+            hr = table.find("tr")
+            if not hr:
+                continue
+            cols = [th.get_text(strip=True).upper() for th in hr.find_all(["th", "td"])]
+            if "G" in cols and "A" in cols and "PTS" in cols:
+                player_tables.append(table)
 
-    if not division_confirmed:
-        return None
+        if len(player_tables) < 2:
+            continue
 
-    # --- Parse scores and date ---
-    home_score = int(score_match.group(1))
-    away_score = int(score_match.group(2))
-
-    date_match = re.search(
-        r'(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday),\s+(\w+ \d+,\s+\d{4})',
-        full_text
-    )
-    game_date = date_match.group(0) if date_match else ""
-
-    game_info = {
-        "game_url": url,
-        "date": game_date,
-        "home_score": home_score,
-        "away_score": away_score,
-        "home_team": "",
-        "home_team_id": "",
-        "away_team": "",
-        "away_team_id": "",
-        "players": []
-    }
-
-    skip_headings = {"Scoring", "Shots", "Scoring Summary", "Penalty Summary", "Staff"}
-
-    for i, table in enumerate(player_tables[:2]):
-        # Find closest preceding heading for team name
-        team_name = f"Team {i+1}"
-        for sibling in table.find_all_previous(["h1", "h2", "h3", "h4"]):
-            text = sibling.get_text(strip=True)
-            if text and text not in skip_headings:
-                team_name = text
+        # Confirm game belongs to this division via player links inside tables
+        division_confirmed = False
+        for table in player_tables:
+            for link in table.find_all("a", href=True):
+                if f"/0/{div_id}/" in link["href"]:
+                    division_confirmed = True
+                    break
+            if division_confirmed:
                 break
 
-        if i == 0:
-            game_info["home_team"] = team_name
-        else:
-            game_info["away_team"] = team_name
+        if not division_confirmed:
+            continue
 
-        # Parse player rows
-        rows = table.find_all("tr")[1:]
-        for row in rows:
-            cols = row.find_all("td")
-            if len(cols) < 6:
-                continue
+        # Must be Final
+        full_text   = soup.get_text()
+        score_match = re.search(r'(\d+)\s*[-–]\s*(\d+)\s*Final', full_text)
+        if not score_match:
+            break  # page is the same regardless of div_id, no point retrying
 
-            jersey = cols[0].get_text(strip=True)
-            name   = cols[1].get_text(strip=True)
-            if not name:
-                continue
+        home_score = int(score_match.group(1))
+        away_score = int(score_match.group(2))
 
-            # Extract team_id and player_id from this player's own link
-            player_id = ""
-            team_id   = ""
-            link = cols[1].find("a", href=True)
-            if link:
-                href = link["href"]
-                # e.g. /team/11823/0/23371/350513/player/4042777
-                m = re.search(r'/team/\d+/0/(\d+)/(\d+)/player/(\d+)', href)
-                if m:
-                    link_div_id = m.group(1)
-                    team_id     = m.group(2)
-                    player_id   = m.group(3)
-                    # Extra safety: skip players whose links point to a different division
-                    if link_div_id != DIVISION_ID:
-                        continue
+        date_match = re.search(
+            r'(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday),\s+(\w+ \d+,\s+\d{4})',
+            full_text
+        )
+        game_date = date_match.group(0) if date_match else ""
 
-            # Set team_id on game_info from first player parsed in each table
-            if team_id:
-                if i == 0 and not game_info["home_team_id"]:
-                    game_info["home_team_id"] = team_id
-                elif i == 1 and not game_info["away_team_id"]:
-                    game_info["away_team_id"] = team_id
+        game_info = {
+            "game_url":     url,
+            "division_id":  div_id,
+            "date":         game_date,
+            "home_score":   home_score,
+            "away_score":   away_score,
+            "home_team":    "",
+            "home_team_id": "",
+            "away_team":    "",
+            "away_team_id": "",
+            "players":      []
+        }
 
-            try:
-                g   = int(cols[2].get_text(strip=True) or 0)
-                a   = int(cols[3].get_text(strip=True) or 0)
-                pts = int(cols[4].get_text(strip=True) or 0)
-                pim = int(cols[5].get_text(strip=True) or 0)
-            except ValueError:
-                continue
+        skip_headings = {"Scoring", "Shots", "Scoring Summary", "Penalty Summary", "Staff"}
 
-            game_info["players"].append({
-                "name":      name,
-                "player_id": player_id,
-                "team":      team_name,
-                "team_id":   team_id,
-                "jersey":    jersey,
-                "g": g, "a": a, "pts": pts, "pim": pim,
-            })
+        for i, table in enumerate(player_tables[:2]):
+            team_name = f"Team {i+1}"
+            for sibling in table.find_all_previous(["h1", "h2", "h3", "h4"]):
+                text = sibling.get_text(strip=True)
+                if text and text not in skip_headings:
+                    team_name = text
+                    break
 
-    # Require at least some players parsed
-    if not game_info["players"]:
-        return None
+            if i == 0:
+                game_info["home_team"] = team_name
+            else:
+                game_info["away_team"] = team_name
 
-    return game_info
+            for row in table.find_all("tr")[1:]:
+                cols = row.find_all("td")
+                if len(cols) < 6:
+                    continue
+
+                jersey = cols[0].get_text(strip=True)
+                name   = cols[1].get_text(strip=True)
+                if not name:
+                    continue
+
+                player_id = ""
+                team_id   = ""
+                link = cols[1].find("a", href=True)
+                if link:
+                    m = re.search(r'/team/\d+/0/(\d+)/(\d+)/player/(\d+)', link["href"])
+                    if m:
+                        if m.group(1) != div_id:
+                            continue  # skip players from wrong division
+                        team_id   = m.group(2)
+                        player_id = m.group(3)
+
+                if team_id:
+                    if i == 0 and not game_info["home_team_id"]:
+                        game_info["home_team_id"] = team_id
+                    elif i == 1 and not game_info["away_team_id"]:
+                        game_info["away_team_id"] = team_id
+
+                try:
+                    g   = int(cols[2].get_text(strip=True) or 0)
+                    a   = int(cols[3].get_text(strip=True) or 0)
+                    pts = int(cols[4].get_text(strip=True) or 0)
+                    pim = int(cols[5].get_text(strip=True) or 0)
+                except ValueError:
+                    continue
+
+                game_info["players"].append({
+                    "name": name, "player_id": player_id,
+                    "team": team_name, "team_id": team_id,
+                    "jersey": jersey,
+                    "g": g, "a": a, "pts": pts, "pim": pim,
+                })
+
+        if not game_info["players"]:
+            return None
+
+        # For non-primary divisions, only keep games involving a Spartan team
+        team_ids_in_game = {game_info["home_team_id"], game_info["away_team_id"]}
+        if div_id != PRIMARY_DIVISION and not (SPARTAN_TEAM_IDS & team_ids_in_game):
+            return None
+
+        return game_info
+
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -223,17 +228,48 @@ def parse_game(game_id):
 # ---------------------------------------------------------------------------
 
 def build_leaders(games):
+    """
+    League leaders across all games.
+    player_id+team_id key keeps multi-team players separate.
+    """
     players = {}
     for game in games:
         for p in game["players"]:
+            key = f"{p['player_id']}_{p['team_id']}" if p["player_id"] else f"{p['name']}_{p['team_id']}"
+            if key not in players:
+                players[key] = {
+                    "name": p["name"], "player_id": p["player_id"],
+                    "team": p["team"], "team_id": p["team_id"],
+                    "jersey": p["jersey"],
+                    "g": 0, "a": 0, "pts": 0, "pim": 0, "gp": 0
+                }
+            players[key]["g"]   += p["g"]
+            players[key]["a"]   += p["a"]
+            players[key]["pts"] += p["pts"]
+            players[key]["pim"] += p["pim"]
+            players[key]["gp"]  += 1
+
+    return sorted(players.values(), key=lambda x: (x["pts"], x["g"]), reverse=True)
+
+
+def build_spartan_leaders(games, spartan_team_ids):
+    """
+    Spartan Leaders: combine each player's stats across ALL divisions
+    but ONLY when they were playing for a Spartan team.
+    Stats from other teams are excluded.
+    Keyed by player_id only so cross-division games combine correctly.
+    """
+    players = {}
+    for game in games:
+        for p in game["players"]:
+            if p["team_id"] not in spartan_team_ids:
+                continue
             key = p["player_id"] if p["player_id"] else p["name"]
             if key not in players:
                 players[key] = {
-                    "name":      p["name"],
-                    "player_id": p["player_id"],
-                    "team":      p["team"],
-                    "team_id":   p["team_id"],
-                    "jersey":    p["jersey"],
+                    "name": p["name"], "player_id": p["player_id"],
+                    "team": p["team"], "team_id": p["team_id"],
+                    "jersey": p["jersey"],
                     "g": 0, "a": 0, "pts": 0, "pim": 0, "gp": 0
                 }
             players[key]["g"]   += p["g"]
@@ -246,8 +282,12 @@ def build_leaders(games):
 
 
 def build_standings(games):
+    """Standings from primary division (2014 Major) only."""
     teams = {}
     for game in games:
+        if game.get("division_id") != PRIMARY_DIVISION:
+            continue
+
         home    = game.get("home_team", "")
         away    = game.get("away_team", "")
         home_id = game.get("home_team_id", "")
@@ -295,15 +335,16 @@ def build_standings(games):
 # ---------------------------------------------------------------------------
 
 def main():
-    print("=== HSL 2014 Major Stats Scraper (Incremental) ===")
+    print("=== HSL Spartan Hockey Stats Scraper (Incremental) ===")
+    print(f"Divisions: {DIVISION_IDS} | Spartan teams: {SPARTAN_TEAM_IDS}")
 
     processed_ids, cached_games = load_cache()
     print(f"Loaded cache: {len(cached_games)} games already stored")
 
     new_ids = get_game_ids_to_scan(processed_ids)
 
-    new_games        = []
-    newly_processed  = set()
+    new_games       = []
+    newly_processed = set()
 
     for i, game_id in enumerate(new_ids):
         if i % 100 == 0 and i > 0:
@@ -314,33 +355,33 @@ def main():
 
         if game:
             new_games.append(game)
-            print(f"  ✓ [{game.get('date','')}] "
+            team_ids_in_game = {game.get("home_team_id"), game.get("away_team_id")}
+            flag = "⭐" if SPARTAN_TEAM_IDS & team_ids_in_game else ""
+            print(f"  ✓{flag} [div {game.get('division_id')}] [{game.get('date','')}] "
                   f"{game.get('home_team','?')} {game.get('home_score','?')} - "
                   f"{game.get('away_score','?')} {game.get('away_team','?')} "
-                  f"| home_id={game.get('home_team_id','')} away_id={game.get('away_team_id','')} "
                   f"| {len(game['players'])} players")
 
         time.sleep(0.3)
 
-    # Merge and save cache
     all_games     = cached_games + new_games
     all_processed = processed_ids | newly_processed
     save_cache(all_processed, all_games)
     print(f"\nCache updated: {len(all_processed)} IDs processed, {len(all_games)} total games")
 
-    # Build output
     leaders         = build_leaders(all_games)
     standings       = build_standings(all_games)
-    spartan_players = [p for p in leaders if p["team_id"] == SPARTAN_TEAM_ID]
+    spartan_players = build_spartan_leaders(all_games, SPARTAN_TEAM_IDS)
 
     print(f"\nSpartan leaders found: {len(spartan_players)}")
     for p in spartan_players[:5]:
-        print(f"  {p['name']} — {p['g']}G {p['a']}A {p['pts']}PTS (team_id={p['team_id']})")
+        print(f"  {p['name']} — {p['g']}G {p['a']}A {p['pts']}PTS (team {p['team_id']})")
 
+    # Spartan team IDs as list for JSON output
     output = {
         "updated":          datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC"),
         "division":         "2014 Major",
-        "spartan_team_id":  SPARTAN_TEAM_ID,
+        "spartan_team_ids": list(SPARTAN_TEAM_IDS),
         "games_processed":  len(all_games),
         "leaders":          leaders,
         "spartan_leaders":  spartan_players,

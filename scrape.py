@@ -38,14 +38,14 @@ RS_BASE    = "https://hockeysuperleague.ca"
 RS_DIVS    = ["23371", "23373", "32765"]
 RS_PRIME   = "23371"
 RS_SPARTAN = {"294811", "294868"}
-RS_SCAN    = (1624500, 1627500)   # anchored around known ID 1626651
+RS_SCAN    = (1624900, 1627000)   # anchored around known ID 1626651
 
 # ── Playoffs ───────────────────────────────────────────────────────────────
 PO_BASE    = "https://hslchampionship.ca"
 PO_DIVS    = ["22196", "36713"]
 PO_PRIME   = "22196"
 PO_SPARTAN = {"350513", "294868"}
-PO_SCAN    = (1828000, 1834000)   # anchored around known IDs 1830371, 1830410
+PO_SCAN    = (1829000, 1833000)   # anchored around known IDs 1830371, 1830410
 
 # ── Shared ─────────────────────────────────────────────────────────────────
 HEADERS    = {"User-Agent": "Mozilla/5.0 (compatible; HSL-stats-bot/1.0)"}
@@ -89,7 +89,7 @@ def discover_ids(base, div, link_pattern):
 def parse_game(gid, base, div, url_tmpl):
     url = f"{base}/{url_tmpl.format(div=div, gid=gid)}"
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=15)
+        resp = requests.get(url, headers=HEADERS, timeout=5)
         resp.raise_for_status()
     except Exception:
         return None

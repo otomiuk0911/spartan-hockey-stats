@@ -1,15 +1,15 @@
 {
-  "updated": "2026-02-28 12:25 UTC",
+  "updated": "2026-02-28 15:58 UTC",
   "spartan_team_ids_rs": [
     "294811",
     "294868"
   ],
   "spartan_team_ids_po": [
-    "350513",
-    "294868"
+    "294868",
+    "350513"
   ],
   "regular_season": {
-    "games_processed": 668,
+    "games_processed": 671,
     "spartan_leaders_14": [
       {
         "name": "Sam Potvin",
@@ -676,6 +676,54 @@
         "gp": 32
       },
       {
+        "name": "Carter Menzies",
+        "player_id": "4041115",
+        "team": "Warriors Hockey Academy",
+        "team_id": "294813",
+        "jersey": "11",
+        "g": 29,
+        "a": 21,
+        "pts": 50,
+        "pim": 40,
+        "gp": 29
+      },
+      {
+        "name": "Liam Lafleur",
+        "player_id": "4041406",
+        "team": "Stars Hockey Academy",
+        "team_id": "294812",
+        "jersey": "10",
+        "g": 33,
+        "a": 16,
+        "pts": 49,
+        "pim": 18,
+        "gp": 30
+      },
+      {
+        "name": "Stratton Glencross",
+        "player_id": "4042910",
+        "team": "Warriors Hockey Academy",
+        "team_id": "294813",
+        "jersey": "22",
+        "g": 24,
+        "a": 25,
+        "pts": 49,
+        "pim": 8,
+        "gp": 27
+      },
+      {
+        "name": "Jack Watson",
+        "player_id": "4042733",
+        "team": "Warriors Hockey Academy",
+        "team_id": "294813",
+        "jersey": "16",
+        "g": 24,
+        "a": 25,
+        "pts": 49,
+        "pim": 22,
+        "gp": 29
+      },
+      {
         "name": "Nash Brand",
         "player_id": "4042024",
         "team": "North Stars Hockey Academy",
@@ -686,18 +734,6 @@
         "pts": 48,
         "pim": 28,
         "gp": 29
-      },
-      {
-        "name": "Carter Menzies",
-        "player_id": "4041115",
-        "team": "Warriors Hockey Academy",
-        "team_id": "294813",
-        "jersey": "11",
-        "g": 27,
-        "a": 21,
-        "pts": 48,
-        "pim": 38,
-        "gp": 28
       },
       {
         "name": "Dustin Cabana",
@@ -724,18 +760,6 @@
         "gp": 32
       },
       {
-        "name": "Stratton Glencross",
-        "player_id": "4042910",
-        "team": "Warriors Hockey Academy",
-        "team_id": "294813",
-        "jersey": "22",
-        "g": 23,
-        "a": 25,
-        "pts": 48,
-        "pim": 8,
-        "gp": 26
-      },
-      {
         "name": "Chase Cameron",
         "player_id": "4042860",
         "team": "Rebels Hockey Academy",
@@ -748,18 +772,6 @@
         "gp": 32
       },
       {
-        "name": "Liam Lafleur",
-        "player_id": "4041406",
-        "team": "Stars Hockey Academy",
-        "team_id": "294812",
-        "jersey": "10",
-        "g": 32,
-        "a": 15,
-        "pts": 47,
-        "pim": 16,
-        "gp": 29
-      },
-      {
         "name": "Gavin Durrand",
         "player_id": "4042902",
         "team": "Saints Pro Hockey Academy",
@@ -770,18 +782,6 @@
         "pts": 47,
         "pim": 50,
         "gp": 33
-      },
-      {
-        "name": "Jack Watson",
-        "player_id": "4042733",
-        "team": "Warriors Hockey Academy",
-        "team_id": "294813",
-        "jersey": "16",
-        "g": 22,
-        "a": 25,
-        "pts": 47,
-        "pim": 22,
-        "gp": 28
       },
       {
         "name": "Carson Febbraro",
@@ -904,6 +904,18 @@
         "gp": 34
       },
       {
+        "name": "Caleb Babiuk",
+        "player_id": "4042590",
+        "team": "Sauce Hockey Academy",
+        "team_id": "294809",
+        "jersey": "26",
+        "g": 22,
+        "a": 21,
+        "pts": 43,
+        "pim": 22,
+        "gp": 29
+      },
+      {
         "name": "Tanner Hanson",
         "player_id": "4041249",
         "team": "Wolverines Hockey Academy",
@@ -928,6 +940,18 @@
         "gp": 32
       },
       {
+        "name": "Noah Catellier",
+        "player_id": "4043079",
+        "team": "HDC Bandits",
+        "team_id": "294802",
+        "jersey": "17",
+        "g": 27,
+        "a": 14,
+        "pts": 41,
+        "pim": 16,
+        "gp": 29
+      },
+      {
         "name": "Jordan Carroll",
         "player_id": "4042526",
         "team": "Stars Hockey Academy",
@@ -938,6 +962,18 @@
         "pts": 41,
         "pim": 4,
         "gp": 32
+      },
+      {
+        "name": "Boone Depew",
+        "player_id": "4041748",
+        "team": "Warriors Hockey Academy",
+        "team_id": "294813",
+        "jersey": "71",
+        "g": 25,
+        "a": 16,
+        "pts": 41,
+        "pim": 34,
+        "gp": 29
       },
       {
         "name": "Bo Zinter",
@@ -976,18 +1012,6 @@
         "gp": 18
       },
       {
-        "name": "Caleb Babiuk",
-        "player_id": "4042590",
-        "team": "Sauce Hockey Academy",
-        "team_id": "294809",
-        "jersey": "26",
-        "g": 20,
-        "a": 21,
-        "pts": 41,
-        "pim": 20,
-        "gp": 28
-      },
-      {
         "name": "Wilkes Ashton",
         "player_id": "4041813",
         "team": "Sauce Hockey Academy",
@@ -1012,18 +1036,6 @@
         "gp": 32
       },
       {
-        "name": "Boone Depew",
-        "player_id": "4041748",
-        "team": "Warriors Hockey Academy",
-        "team_id": "294813",
-        "jersey": "71",
-        "g": 24,
-        "a": 16,
-        "pts": 40,
-        "pim": 34,
-        "gp": 28
-      },
-      {
         "name": "Max Birnie",
         "player_id": "4042294",
         "team": "Queen City Young Guns",
@@ -1033,7 +1045,7 @@
         "a": 12,
         "pts": 39,
         "pim": 21,
-        "gp": 29
+        "gp": 30
       },
       {
         "name": "Carter Pi",
@@ -1046,18 +1058,6 @@
         "pts": 39,
         "pim": 20,
         "gp": 33
-      },
-      {
-        "name": "Noah Catellier",
-        "player_id": "4043079",
-        "team": "HDC Bandits",
-        "team_id": "294802",
-        "jersey": "17",
-        "g": 25,
-        "a": 14,
-        "pts": 39,
-        "pim": 16,
-        "gp": 28
       },
       {
         "name": "Rylan Bigelow",
@@ -1142,6 +1142,18 @@
         "pts": 38,
         "pim": 49,
         "gp": 33
+      },
+      {
+        "name": "Walter Legere",
+        "player_id": "4042682",
+        "team": "Sauce Hockey Academy",
+        "team_id": "294809",
+        "jersey": "13",
+        "g": 16,
+        "a": 22,
+        "pts": 38,
+        "pim": 16,
+        "gp": 29
       },
       {
         "name": "Gavin Kool",
@@ -1262,18 +1274,6 @@
         "pts": 36,
         "pim": 10,
         "gp": 32
-      },
-      {
-        "name": "Walter Legere",
-        "player_id": "4042682",
-        "team": "Sauce Hockey Academy",
-        "team_id": "294809",
-        "jersey": "13",
-        "g": 15,
-        "a": 21,
-        "pts": 36,
-        "pim": 16,
-        "gp": 28
       },
       {
         "name": "Emric Neurauter",
@@ -1432,6 +1432,18 @@
         "gp": 33
       },
       {
+        "name": "Liam Faris",
+        "player_id": "4122962",
+        "team": "South Sask Academy",
+        "team_id": "294810",
+        "jersey": "66",
+        "g": 21,
+        "a": 12,
+        "pts": 33,
+        "pim": 16,
+        "gp": 29
+      },
+      {
         "name": "Kristian Dvorski",
         "player_id": "4041828",
         "team": "Capital City Knights",
@@ -1477,7 +1489,7 @@
         "a": 17,
         "pts": 33,
         "pim": 12,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Hendricks Collin",
@@ -1501,7 +1513,7 @@
         "a": 19,
         "pts": 33,
         "pim": 2,
-        "gp": 27
+        "gp": 28
       },
       {
         "name": "Nash Bracegirdle",
@@ -1538,18 +1550,6 @@
         "pts": 32,
         "pim": 14,
         "gp": 33
-      },
-      {
-        "name": "Liam Faris",
-        "player_id": "4122962",
-        "team": "South Sask Academy",
-        "team_id": "294810",
-        "jersey": "66",
-        "g": 20,
-        "a": 12,
-        "pts": 32,
-        "pim": 16,
-        "gp": 28
       },
       {
         "name": "Nash Keeley",
@@ -1610,6 +1610,18 @@
         "pts": 32,
         "pim": 16,
         "gp": 30
+      },
+      {
+        "name": "Cade Brouwer",
+        "player_id": "4042084",
+        "team": "Warriors Hockey Academy",
+        "team_id": "294813",
+        "jersey": "36",
+        "g": 13,
+        "a": 19,
+        "pts": 32,
+        "pim": 10,
+        "gp": 29
       },
       {
         "name": "Luca Catellier",
@@ -1684,18 +1696,6 @@
         "gp": 32
       },
       {
-        "name": "Cade Brouwer",
-        "player_id": "4042084",
-        "team": "Warriors Hockey Academy",
-        "team_id": "294813",
-        "jersey": "36",
-        "g": 12,
-        "a": 19,
-        "pts": 31,
-        "pim": 10,
-        "gp": 28
-      },
-      {
         "name": "James Menzies",
         "player_id": "4042826",
         "team": "Rebels Hockey Academy",
@@ -1728,8 +1728,8 @@
         "g": 16,
         "a": 14,
         "pts": 30,
-        "pim": 26,
-        "gp": 28
+        "pim": 28,
+        "gp": 29
       },
       {
         "name": "Elijah Smitke",
@@ -1752,8 +1752,8 @@
         "g": 15,
         "a": 15,
         "pts": 30,
-        "pim": 20,
-        "gp": 29
+        "pim": 22,
+        "gp": 30
       },
       {
         "name": "Gregory Skelton",
@@ -1826,6 +1826,18 @@
         "pts": 29,
         "pim": 10,
         "gp": 32
+      },
+      {
+        "name": "Brody Steen",
+        "player_id": "4042982",
+        "team": "Warriors Hockey Academy",
+        "team_id": "294813",
+        "jersey": "19",
+        "g": 13,
+        "a": 16,
+        "pts": 29,
+        "pim": 10,
+        "gp": 28
       },
       {
         "name": "Kaleb Bodnar",
@@ -1936,18 +1948,6 @@
         "gp": 33
       },
       {
-        "name": "Brody Steen",
-        "player_id": "4042982",
-        "team": "Warriors Hockey Academy",
-        "team_id": "294813",
-        "jersey": "19",
-        "g": 13,
-        "a": 15,
-        "pts": 28,
-        "pim": 8,
-        "gp": 27
-      },
-      {
         "name": "Keaton Craig",
         "player_id": "4044791",
         "team": "Spartan Hockey Academy",
@@ -2018,6 +2018,18 @@
         "pts": 27,
         "pim": 24,
         "gp": 32
+      },
+      {
+        "name": "Evgeniy Tereshchenko",
+        "player_id": "4041916",
+        "team": "Sauce Hockey Academy",
+        "team_id": "294809",
+        "jersey": "7",
+        "g": 16,
+        "a": 11,
+        "pts": 27,
+        "pim": 4,
+        "gp": 29
       },
       {
         "name": "Cashel Martschuk",
@@ -2092,6 +2104,18 @@
         "gp": 31
       },
       {
+        "name": "Zachary Androulidakis",
+        "player_id": "4041169",
+        "team": "HDC Bandits",
+        "team_id": "294802",
+        "jersey": "76",
+        "g": 5,
+        "a": 22,
+        "pts": 27,
+        "pim": 8,
+        "gp": 29
+      },
+      {
         "name": "Laiken Laird",
         "player_id": "4041769",
         "team": "Aces Hockey Academy",
@@ -2125,19 +2149,7 @@
         "a": 9,
         "pts": 26,
         "pim": 30,
-        "gp": 28
-      },
-      {
-        "name": "Evgeniy Tereshchenko",
-        "player_id": "4041916",
-        "team": "Sauce Hockey Academy",
-        "team_id": "294809",
-        "jersey": "7",
-        "g": 16,
-        "a": 10,
-        "pts": 26,
-        "pim": 4,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Beckett McNabb",
@@ -2212,18 +2224,6 @@
         "gp": 32
       },
       {
-        "name": "Zachary Androulidakis",
-        "player_id": "4041169",
-        "team": "HDC Bandits",
-        "team_id": "294802",
-        "jersey": "76",
-        "g": 5,
-        "a": 21,
-        "pts": 26,
-        "pim": 8,
-        "gp": 28
-      },
-      {
         "name": "Noah Duthie",
         "player_id": "4043039",
         "team": "Rebels Hockey Academy",
@@ -2269,7 +2269,7 @@
         "a": 11,
         "pts": 25,
         "pim": 4,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Hudson Card",
@@ -2281,7 +2281,7 @@
         "a": 12,
         "pts": 25,
         "pim": 34,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Heath Fisher",
@@ -2294,6 +2294,18 @@
         "pts": 25,
         "pim": 8,
         "gp": 32
+      },
+      {
+        "name": "Levi Cuschieri",
+        "player_id": "4041164",
+        "team": "HDC Bandits",
+        "team_id": "294802",
+        "jersey": "6",
+        "g": 11,
+        "a": 14,
+        "pts": 25,
+        "pim": 28,
+        "gp": 28
       },
       {
         "name": "Cooper Anhorn",
@@ -2368,18 +2380,6 @@
         "gp": 12
       },
       {
-        "name": "Levi Cuschieri",
-        "player_id": "4041164",
-        "team": "HDC Bandits",
-        "team_id": "294802",
-        "jersey": "6",
-        "g": 11,
-        "a": 13,
-        "pts": 24,
-        "pim": 28,
-        "gp": 27
-      },
-      {
         "name": "Nate Green",
         "player_id": "4042014",
         "team": "North Stars Academy Wild",
@@ -2450,6 +2450,18 @@
         "pts": 24,
         "pim": 20,
         "gp": 32
+      },
+      {
+        "name": "Mason Kluner",
+        "player_id": "4042674",
+        "team": "Stars Hockey Academy",
+        "team_id": "294812",
+        "jersey": "47",
+        "g": 14,
+        "a": 9,
+        "pts": 23,
+        "pim": 12,
+        "gp": 29
       },
       {
         "name": "Elias Woobin Jung",
@@ -2536,6 +2548,18 @@
         "gp": 33
       },
       {
+        "name": "Nixon Dueck",
+        "player_id": "4042253",
+        "team": "Queen City Young Guns",
+        "team_id": "294807",
+        "jersey": "17",
+        "g": 9,
+        "a": 14,
+        "pts": 23,
+        "pim": 26,
+        "gp": 30
+      },
+      {
         "name": "Carter Moore",
         "player_id": "4042562",
         "team": "Caps Hockey Club",
@@ -2617,7 +2641,7 @@
         "a": 7,
         "pts": 22,
         "pim": 26,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Brock Taylor",
@@ -2664,8 +2688,8 @@
         "g": 9,
         "a": 13,
         "pts": 22,
-        "pim": 40,
-        "gp": 28
+        "pim": 42,
+        "gp": 29
       },
       {
         "name": "Maverick Hamilton",
@@ -2678,18 +2702,6 @@
         "pts": 22,
         "pim": 34,
         "gp": 32
-      },
-      {
-        "name": "Nixon Dueck",
-        "player_id": "4042253",
-        "team": "Queen City Young Guns",
-        "team_id": "294807",
-        "jersey": "17",
-        "g": 8,
-        "a": 14,
-        "pts": 22,
-        "pim": 26,
-        "gp": 29
       },
       {
         "name": "Banks Fischer",
@@ -2788,15 +2800,15 @@
         "gp": 30
       },
       {
-        "name": "Mason Kluner",
-        "player_id": "4042674",
-        "team": "Stars Hockey Academy",
-        "team_id": "294812",
-        "jersey": "47",
+        "name": "Carter Mangan",
+        "player_id": "4042587",
+        "team": "Sauce Hockey Academy",
+        "team_id": "294809",
+        "jersey": "71",
         "g": 12,
         "a": 9,
         "pts": 21,
-        "pim": 10,
+        "pim": 14,
         "gp": 28
       },
       {
@@ -2908,6 +2920,18 @@
         "gp": 28
       },
       {
+        "name": "Valentine Reich",
+        "player_id": "4044322",
+        "team": "Queen City Young Guns",
+        "team_id": "294807",
+        "jersey": "19",
+        "g": 10,
+        "a": 11,
+        "pts": 21,
+        "pim": 34,
+        "gp": 30
+      },
+      {
         "name": "Weston Olsen",
         "player_id": "4137721",
         "team": "North Stars Hockey Academy - 14A",
@@ -2952,8 +2976,8 @@
         "g": 2,
         "a": 19,
         "pts": 21,
-        "pim": 28,
-        "gp": 28
+        "pim": 30,
+        "gp": 29
       },
       {
         "name": "Briggs Baraniuk",
@@ -2978,6 +3002,18 @@
         "pts": 20,
         "pim": 4,
         "gp": 32
+      },
+      {
+        "name": "Calder Crossman",
+        "player_id": "4041736",
+        "team": "South Sask Academy",
+        "team_id": "294810",
+        "jersey": "88",
+        "g": 13,
+        "a": 7,
+        "pts": 20,
+        "pim": 26,
+        "gp": 29
       },
       {
         "name": "Hudson Murray",
@@ -3013,7 +3049,7 @@
         "a": 10,
         "pts": 20,
         "pim": 26,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Ronin Chan",
@@ -3028,18 +3064,6 @@
         "gp": 19
       },
       {
-        "name": "Valentine Reich",
-        "player_id": "4044322",
-        "team": "Queen City Young Guns",
-        "team_id": "294807",
-        "jersey": "19",
-        "g": 9,
-        "a": 11,
-        "pts": 20,
-        "pim": 34,
-        "gp": 29
-      },
-      {
         "name": "Walker Hirsekorn",
         "player_id": "4042621",
         "team": "Stars Hockey Academy",
@@ -3049,7 +3073,7 @@
         "a": 11,
         "pts": 20,
         "pim": 0,
-        "gp": 29
+        "gp": 30
       },
       {
         "name": "Colten Dunn",
@@ -3097,7 +3121,7 @@
         "a": 14,
         "pts": 20,
         "pim": 24,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Colt Rimer",
@@ -3109,7 +3133,7 @@
         "a": 14,
         "pts": 20,
         "pim": 2,
-        "gp": 25
+        "gp": 26
       },
       {
         "name": "Hunter Pickering",
@@ -3172,18 +3196,6 @@
         "gp": 32
       },
       {
-        "name": "Calder Crossman",
-        "player_id": "4041736",
-        "team": "South Sask Academy",
-        "team_id": "294810",
-        "jersey": "88",
-        "g": 12,
-        "a": 7,
-        "pts": 19,
-        "pim": 26,
-        "gp": 28
-      },
-      {
         "name": "Sam Potvin",
         "player_id": "4041318",
         "team": "Spartan Hockey Academy",
@@ -3196,16 +3208,16 @@
         "gp": 11
       },
       {
-        "name": "Carter Mangan",
-        "player_id": "4042587",
-        "team": "Sauce Hockey Academy",
-        "team_id": "294809",
-        "jersey": "71",
+        "name": "Louie Clarke",
+        "player_id": "4041618",
+        "team": "South Sask Academy",
+        "team_id": "294810",
+        "jersey": "24",
         "g": 11,
         "a": 8,
         "pts": 19,
-        "pim": 14,
-        "gp": 27
+        "pim": 20,
+        "gp": 29
       },
       {
         "name": "Jack Bendall",
@@ -3217,6 +3229,30 @@
         "a": 8,
         "pts": 19,
         "pim": 14,
+        "gp": 29
+      },
+      {
+        "name": "Kaison Colpitts",
+        "player_id": "4041904",
+        "team": "Stars Hockey Academy",
+        "team_id": "294812",
+        "jersey": "29",
+        "g": 11,
+        "a": 8,
+        "pts": 19,
+        "pim": 10,
+        "gp": 30
+      },
+      {
+        "name": "Chase Beach",
+        "player_id": "4042530",
+        "team": "Stars Hockey Academy",
+        "team_id": "294812",
+        "jersey": "15",
+        "g": 10,
+        "a": 9,
+        "pts": 19,
+        "pim": 0,
         "gp": 29
       },
       {
@@ -3328,18 +3364,6 @@
         "gp": 32
       },
       {
-        "name": "Louie Clarke",
-        "player_id": "4041618",
-        "team": "South Sask Academy",
-        "team_id": "294810",
-        "jersey": "24",
-        "g": 11,
-        "a": 7,
-        "pts": 18,
-        "pim": 16,
-        "gp": 28
-      },
-      {
         "name": "Kohen Price",
         "player_id": "4041879",
         "team": "Wolverines Hockey Academy",
@@ -3373,19 +3397,7 @@
         "a": 8,
         "pts": 18,
         "pim": 14,
-        "gp": 29
-      },
-      {
-        "name": "Chase Beach",
-        "player_id": "4042530",
-        "team": "Stars Hockey Academy",
-        "team_id": "294812",
-        "jersey": "15",
-        "g": 10,
-        "a": 8,
-        "pts": 18,
-        "pim": 0,
-        "gp": 28
+        "gp": 30
       },
       {
         "name": "Declan Kenny",
@@ -3520,6 +3532,18 @@
         "gp": 33
       },
       {
+        "name": "Dominic Ricciardi",
+        "player_id": "4515367",
+        "team": "HDC Bandits",
+        "team_id": "294802",
+        "jersey": "",
+        "g": 11,
+        "a": 6,
+        "pts": 17,
+        "pim": 8,
+        "gp": 7
+      },
+      {
         "name": "Aubree Tobin",
         "player_id": "4095264",
         "team": "HDC Bandits",
@@ -3556,18 +3580,6 @@
         "gp": 28
       },
       {
-        "name": "Kaison Colpitts",
-        "player_id": "4041904",
-        "team": "Stars Hockey Academy",
-        "team_id": "294812",
-        "jersey": "29",
-        "g": 10,
-        "a": 7,
-        "pts": 17,
-        "pim": 8,
-        "gp": 29
-      },
-      {
         "name": "Bennett Helfrich",
         "player_id": "4042481",
         "team": "Bow Valley Stars",
@@ -3590,6 +3602,18 @@
         "pts": 17,
         "pim": 20,
         "gp": 29
+      },
+      {
+        "name": "cooper malloch",
+        "player_id": "4042514",
+        "team": "Stars Hockey Academy",
+        "team_id": "294812",
+        "jersey": "9",
+        "g": 7,
+        "a": 10,
+        "pts": 17,
+        "pim": 28,
+        "gp": 30
       },
       {
         "name": "Axel Trebaczkiewicz",
@@ -3661,7 +3685,7 @@
         "a": 12,
         "pts": 17,
         "pim": 20,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Oaklen Mathieu",
@@ -3709,7 +3733,7 @@
         "a": 6,
         "pts": 16,
         "pim": 12,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Temple Dudman",
@@ -3760,18 +3784,6 @@
         "gp": 27
       },
       {
-        "name": "cooper malloch",
-        "player_id": "4042514",
-        "team": "Stars Hockey Academy",
-        "team_id": "294812",
-        "jersey": "9",
-        "g": 7,
-        "a": 9,
-        "pts": 16,
-        "pim": 28,
-        "gp": 29
-      },
-      {
         "name": "Tatum Streeter",
         "player_id": "",
         "team": "North Stars Hockey Academy",
@@ -3805,7 +3817,19 @@
         "a": 10,
         "pts": 16,
         "pim": 24,
-        "gp": 28
+        "gp": 29
+      },
+      {
+        "name": "Bennett Ross",
+        "player_id": "4042117",
+        "team": "Warriors Hockey Academy",
+        "team_id": "294813",
+        "jersey": "15",
+        "g": 5,
+        "a": 11,
+        "pts": 16,
+        "pim": 24,
+        "gp": 29
       },
       {
         "name": "Gus Classen",
@@ -3829,7 +3853,7 @@
         "a": 11,
         "pts": 16,
         "pim": 26,
-        "gp": 29
+        "gp": 30
       },
       {
         "name": "Ellie Zenzeluk",
@@ -3901,7 +3925,7 @@
         "a": 2,
         "pts": 15,
         "pim": 26,
-        "gp": 27
+        "gp": 28
       },
       {
         "name": "Beckham Buchanan",
@@ -3940,18 +3964,6 @@
         "gp": 12
       },
       {
-        "name": "Dominic Ricciardi",
-        "player_id": "4515367",
-        "team": "HDC Bandits",
-        "team_id": "294802",
-        "jersey": "",
-        "g": 10,
-        "a": 5,
-        "pts": 15,
-        "pim": 8,
-        "gp": 6
-      },
-      {
         "name": "Austin Sundquist",
         "player_id": "4093761",
         "team": "HDC Bandits",
@@ -3974,6 +3986,18 @@
         "pts": 15,
         "pim": 18,
         "gp": 32
+      },
+      {
+        "name": "Rylan Kradovill",
+        "player_id": "4042249",
+        "team": "Queen City Young Guns",
+        "team_id": "294807",
+        "jersey": "20",
+        "g": 8,
+        "a": 7,
+        "pts": 15,
+        "pim": 6,
+        "gp": 30
       },
       {
         "name": "Jacob Kwiatkowski",
@@ -4000,6 +4024,18 @@
         "gp": 30
       },
       {
+        "name": "Jett Ryan",
+        "player_id": "4042266",
+        "team": "Queen City Young Guns",
+        "team_id": "294807",
+        "jersey": "55",
+        "g": 7,
+        "a": 8,
+        "pts": 15,
+        "pim": 18,
+        "gp": 30
+      },
+      {
         "name": "Isaac Lindsay",
         "player_id": "4042282",
         "team": "Queen City Young Guns",
@@ -4009,7 +4045,7 @@
         "a": 8,
         "pts": 15,
         "pim": 10,
-        "gp": 29
+        "gp": 30
       },
       {
         "name": "Grayson Finley",
@@ -4045,19 +4081,7 @@
         "a": 10,
         "pts": 15,
         "pim": 4,
-        "gp": 28
-      },
-      {
-        "name": "Bennett Ross",
-        "player_id": "4042117",
-        "team": "Warriors Hockey Academy",
-        "team_id": "294813",
-        "jersey": "15",
-        "g": 5,
-        "a": 10,
-        "pts": 15,
-        "pim": 22,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Beckham Block",
@@ -4288,18 +4312,6 @@
         "gp": 33
       },
       {
-        "name": "Rylan Kradovill",
-        "player_id": "4042249",
-        "team": "Queen City Young Guns",
-        "team_id": "294807",
-        "jersey": "20",
-        "g": 8,
-        "a": 6,
-        "pts": 14,
-        "pim": 4,
-        "gp": 29
-      },
-      {
         "name": "Traelin Sylvain",
         "player_id": "",
         "team": "Spartan Hockey Academy",
@@ -4348,18 +4360,6 @@
         "gp": 33
       },
       {
-        "name": "Jett Ryan",
-        "player_id": "4042266",
-        "team": "Queen City Young Guns",
-        "team_id": "294807",
-        "jersey": "55",
-        "g": 7,
-        "a": 7,
-        "pts": 14,
-        "pim": 18,
-        "gp": 29
-      },
-      {
         "name": "Emmitt Watters",
         "player_id": "",
         "team": "Calgary Crusaders",
@@ -4406,6 +4406,30 @@
         "pts": 14,
         "pim": 0,
         "gp": 32
+      },
+      {
+        "name": "Declan Fogarty",
+        "player_id": "4042284",
+        "team": "Queen City Young Guns",
+        "team_id": "294807",
+        "jersey": "15",
+        "g": 5,
+        "a": 9,
+        "pts": 14,
+        "pim": 50,
+        "gp": 30
+      },
+      {
+        "name": "Lucas Gustus",
+        "player_id": "4041359",
+        "team": "Stars Hockey Academy",
+        "team_id": "294812",
+        "jersey": "77",
+        "g": 5,
+        "a": 9,
+        "pts": 14,
+        "pim": 14,
+        "gp": 30
       },
       {
         "name": "Bryce Holler",
@@ -4466,6 +4490,18 @@
         "pts": 14,
         "pim": 10,
         "gp": 32
+      },
+      {
+        "name": "Couper Yankilevich",
+        "player_id": "4041113",
+        "team": "Stars Hockey Academy",
+        "team_id": "294812",
+        "jersey": "4",
+        "g": 1,
+        "a": 13,
+        "pts": 14,
+        "pim": 16,
+        "gp": 29
       },
       {
         "name": "William Lychak",
@@ -4572,8 +4608,8 @@
         "g": 6,
         "a": 7,
         "pts": 13,
-        "pim": 56,
-        "gp": 28
+        "pim": 60,
+        "gp": 29
       },
       {
         "name": "Eli McCalmon",
@@ -4585,7 +4621,7 @@
         "a": 7,
         "pts": 13,
         "pim": 16,
-        "gp": 29
+        "gp": 30
       },
       {
         "name": "Remington Trembecky",
@@ -4621,19 +4657,7 @@
         "a": 8,
         "pts": 13,
         "pim": 6,
-        "gp": 29
-      },
-      {
-        "name": "Declan Fogarty",
-        "player_id": "4042284",
-        "team": "Queen City Young Guns",
-        "team_id": "294807",
-        "jersey": "15",
-        "g": 5,
-        "a": 8,
-        "pts": 13,
-        "pim": 46,
-        "gp": 29
+        "gp": 30
       },
       {
         "name": "Hayes Leinberger",
@@ -4729,7 +4753,7 @@
         "a": 11,
         "pts": 13,
         "pim": 44,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Henry Melenberg",
@@ -4933,7 +4957,7 @@
         "a": 7,
         "pts": 12,
         "pim": 4,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Spencer Skulsky",
@@ -5006,18 +5030,6 @@
         "pts": 12,
         "pim": 0,
         "gp": 31
-      },
-      {
-        "name": "Lucas Gustus",
-        "player_id": "4041359",
-        "team": "Stars Hockey Academy",
-        "team_id": "294812",
-        "jersey": "77",
-        "g": 4,
-        "a": 8,
-        "pts": 12,
-        "pim": 14,
-        "gp": 29
       },
       {
         "name": "Brixton Marceau",
@@ -5209,7 +5221,7 @@
         "a": 7,
         "pts": 11,
         "pim": 4,
-        "gp": 26
+        "gp": 27
       },
       {
         "name": "Charles Kot",
@@ -5304,8 +5316,8 @@
         "g": 3,
         "a": 8,
         "pts": 11,
-        "pim": 72,
-        "gp": 29
+        "pim": 78,
+        "gp": 30
       },
       {
         "name": "Chase Boden",
@@ -5364,8 +5376,8 @@
         "g": 1,
         "a": 10,
         "pts": 11,
-        "pim": 14,
-        "gp": 29
+        "pim": 16,
+        "gp": 30
       },
       {
         "name": "Brooks Roussel",
@@ -5593,7 +5605,7 @@
         "a": 7,
         "pts": 10,
         "pim": 4,
-        "gp": 29
+        "gp": 30
       },
       {
         "name": "Dane Miller",
@@ -5725,7 +5737,7 @@
         "a": 9,
         "pts": 10,
         "pim": 18,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Beckett Button",
@@ -5750,18 +5762,6 @@
         "pts": 10,
         "pim": 16,
         "gp": 32
-      },
-      {
-        "name": "Couper Yankilevich",
-        "player_id": "4041113",
-        "team": "Stars Hockey Academy",
-        "team_id": "294812",
-        "jersey": "4",
-        "g": 0,
-        "a": 10,
-        "pts": 10,
-        "pim": 16,
-        "gp": 28
       },
       {
         "name": "Jagger Kildaw",
@@ -5834,6 +5834,18 @@
         "pts": 9,
         "pim": 20,
         "gp": 28
+      },
+      {
+        "name": "Zachariah Thompson",
+        "player_id": "4048480",
+        "team": "South Sask Academy",
+        "team_id": "294810",
+        "jersey": "18",
+        "g": 5,
+        "a": 4,
+        "pts": 9,
+        "pim": 24,
+        "gp": 25
       },
       {
         "name": "Alexander Friesen",
@@ -6028,6 +6040,18 @@
         "gp": 31
       },
       {
+        "name": "Kane Schwabe",
+        "player_id": "4041757",
+        "team": "South Sask Academy",
+        "team_id": "294810",
+        "jersey": "23",
+        "g": 1,
+        "a": 8,
+        "pts": 9,
+        "pim": 8,
+        "gp": 29
+      },
+      {
         "name": "Rory Klaassen",
         "player_id": "4041175",
         "team": "Riggers Hockey Academy",
@@ -6172,18 +6196,6 @@
         "gp": 6
       },
       {
-        "name": "Zachariah Thompson",
-        "player_id": "4048480",
-        "team": "South Sask Academy",
-        "team_id": "294810",
-        "jersey": "18",
-        "g": 5,
-        "a": 3,
-        "pts": 8,
-        "pim": 24,
-        "gp": 24
-      },
-      {
         "name": "Nixon Flintoff",
         "player_id": "4042430",
         "team": "North Stars Academy Wild",
@@ -6241,7 +6253,7 @@
         "a": 4,
         "pts": 8,
         "pim": 4,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Sebastian Rubiano",
@@ -6252,8 +6264,8 @@
         "g": 4,
         "a": 4,
         "pts": 8,
-        "pim": 36,
-        "gp": 29
+        "pim": 40,
+        "gp": 30
       },
       {
         "name": "Bradley Oduor",
@@ -6445,7 +6457,7 @@
         "a": 6,
         "pts": 8,
         "pim": 0,
-        "gp": 24
+        "gp": 25
       },
       {
         "name": "Luka Radmanovich",
@@ -6493,7 +6505,7 @@
         "a": 7,
         "pts": 8,
         "pim": 6,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Blake Adams",
@@ -6542,18 +6554,6 @@
         "pts": 8,
         "pim": 16,
         "gp": 33
-      },
-      {
-        "name": "Kane Schwabe",
-        "player_id": "4041757",
-        "team": "South Sask Academy",
-        "team_id": "294810",
-        "jersey": "23",
-        "g": 0,
-        "a": 8,
-        "pts": 8,
-        "pim": 8,
-        "gp": 28
       },
       {
         "name": "Max Myskiw",
@@ -6661,7 +6661,7 @@
         "a": 4,
         "pts": 7,
         "pim": 22,
-        "gp": 24
+        "gp": 25
       },
       {
         "name": "Camden Swainson",
@@ -6769,7 +6769,7 @@
         "a": 5,
         "pts": 7,
         "pim": 4,
-        "gp": 27
+        "gp": 28
       },
       {
         "name": "Fletcher McLean",
@@ -6781,7 +6781,7 @@
         "a": 5,
         "pts": 7,
         "pim": 20,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Alexandre Woodlock",
@@ -6805,7 +6805,7 @@
         "a": 5,
         "pts": 7,
         "pim": 14,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Brooks Lee",
@@ -6960,8 +6960,8 @@
         "g": 0,
         "a": 7,
         "pts": 7,
-        "pim": 31,
-        "gp": 28
+        "pim": 33,
+        "gp": 29
       },
       {
         "name": "Kaelum Glasier",
@@ -7156,6 +7156,18 @@
         "gp": 5
       },
       {
+        "name": "Weston Walsh",
+        "player_id": "4515368",
+        "team": "HDC Bandits",
+        "team_id": "294802",
+        "jersey": "",
+        "g": 4,
+        "a": 2,
+        "pts": 6,
+        "pim": 4,
+        "gp": 7
+      },
+      {
         "name": "Braden Melenberg",
         "player_id": "4041793",
         "team": "Capital City Knights",
@@ -7344,8 +7356,8 @@
         "g": 2,
         "a": 4,
         "pts": 6,
-        "pim": 30,
-        "gp": 29
+        "pim": 32,
+        "gp": 30
       },
       {
         "name": "Koen Buckingham",
@@ -7489,7 +7501,7 @@
         "a": 6,
         "pts": 6,
         "pim": 8,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Colton Polnick",
@@ -7501,7 +7513,7 @@
         "a": 6,
         "pts": 6,
         "pim": 0,
-        "gp": 25
+        "gp": 26
       },
       {
         "name": "Kaelin Miller",
@@ -7804,18 +7816,6 @@
         "gp": 6
       },
       {
-        "name": "Weston Walsh",
-        "player_id": "4515368",
-        "team": "HDC Bandits",
-        "team_id": "294802",
-        "jersey": "",
-        "g": 3,
-        "a": 2,
-        "pts": 5,
-        "pim": 4,
-        "gp": 6
-      },
-      {
         "name": "Harrison Clement",
         "player_id": "4042856",
         "team": "Rebels Hockey Academy",
@@ -7848,8 +7848,8 @@
         "g": 2,
         "a": 3,
         "pts": 5,
-        "pim": 34,
-        "gp": 26
+        "pim": 36,
+        "gp": 27
       },
       {
         "name": "Jack Badham",
@@ -8320,6 +8320,18 @@
         "gp": 4
       },
       {
+        "name": "Miller Schmaltz",
+        "player_id": "4042732",
+        "team": "Sauce Hockey Academy",
+        "team_id": "294809",
+        "jersey": "12",
+        "g": 2,
+        "a": 2,
+        "pts": 4,
+        "pim": 4,
+        "gp": 27
+      },
+      {
         "name": "Axl Smashnuk",
         "player_id": "4042684",
         "team": "Wolverines Hockey Academy",
@@ -8569,7 +8581,7 @@
         "a": 3,
         "pts": 4,
         "pim": 20,
-        "gp": 27
+        "gp": 28
       },
       {
         "name": "Noah Crawler",
@@ -8820,8 +8832,8 @@
         "g": 0,
         "a": 4,
         "pts": 4,
-        "pim": 38,
-        "gp": 28
+        "pim": 42,
+        "gp": 29
       },
       {
         "name": "Madden Swain",
@@ -8869,7 +8881,7 @@
         "a": 4,
         "pts": 4,
         "pim": 6,
-        "gp": 29
+        "gp": 30
       },
       {
         "name": "Nikolas Giannopoulos",
@@ -9074,18 +9086,6 @@
         "pts": 3,
         "pim": 2,
         "gp": 4
-      },
-      {
-        "name": "Miller Schmaltz",
-        "player_id": "4042732",
-        "team": "Sauce Hockey Academy",
-        "team_id": "294809",
-        "jersey": "12",
-        "g": 2,
-        "a": 1,
-        "pts": 3,
-        "pim": 4,
-        "gp": 26
       },
       {
         "name": "Stone Thomas",
@@ -10489,7 +10489,7 @@
         "a": 2,
         "pts": 2,
         "pim": 20,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "James Grant",
@@ -11629,7 +11629,7 @@
         "a": 1,
         "pts": 1,
         "pim": 0,
-        "gp": 25
+        "gp": 26
       },
       {
         "name": "Easton Eagle",
@@ -11677,7 +11677,7 @@
         "a": 1,
         "pts": 1,
         "pim": 0,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Eli Rus",
@@ -11856,8 +11856,8 @@
         "g": 0,
         "a": 1,
         "pts": 1,
-        "pim": 14,
-        "gp": 21
+        "pim": 16,
+        "gp": 22
       },
       {
         "name": "Sebastian Rivero",
@@ -12925,7 +12925,7 @@
         "a": 0,
         "pts": 0,
         "pim": 0,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "McKenna Gardipy",
@@ -12937,7 +12937,7 @@
         "a": 0,
         "pts": 0,
         "pim": 0,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Maxwell Kane",
@@ -12949,7 +12949,7 @@
         "a": 0,
         "pts": 0,
         "pim": 0,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Hayden Keith",
@@ -13033,7 +13033,7 @@
         "a": 0,
         "pts": 0,
         "pim": 0,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Madden McGeough",
@@ -13069,7 +13069,7 @@
         "a": 0,
         "pts": 0,
         "pim": 0,
-        "gp": 27
+        "gp": 28
       },
       {
         "name": "Wesson Dutton",
@@ -13081,7 +13081,7 @@
         "a": 0,
         "pts": 0,
         "pim": 2,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Boston Bovey",
@@ -13225,7 +13225,7 @@
         "a": 0,
         "pts": 0,
         "pim": 0,
-        "gp": 28
+        "gp": 29
       },
       {
         "name": "Keenan Peters",
@@ -13237,7 +13237,7 @@
         "a": 0,
         "pts": 0,
         "pim": 0,
-        "gp": 25
+        "gp": 26
       },
       {
         "name": "Saoirse Connolly",
@@ -13285,7 +13285,7 @@
         "a": 0,
         "pts": 0,
         "pim": 0,
-        "gp": 26
+        "gp": 27
       },
       {
         "name": "Luke Dodd",
@@ -13789,7 +13789,7 @@
         "a": 0,
         "pts": 0,
         "pim": 0,
-        "gp": 26
+        "gp": 27
       },
       {
         "name": "Linden Badgley",
@@ -15159,6 +15159,17 @@
         "pts": 51
       },
       {
+        "team": "HDC Bandits",
+        "team_id": "294802",
+        "gp": 29,
+        "w": 24,
+        "l": 4,
+        "otl": 1,
+        "gf": 155,
+        "ga": 76,
+        "pts": 49
+      },
+      {
         "team": "Calgary Crusaders",
         "team_id": "319305",
         "gp": 31,
@@ -15170,15 +15181,15 @@
         "pts": 48
       },
       {
-        "team": "HDC Bandits",
-        "team_id": "294802",
-        "gp": 28,
+        "team": "Warriors Hockey Academy",
+        "team_id": "294813",
+        "gp": 29,
         "w": 23,
-        "l": 4,
-        "otl": 1,
-        "gf": 150,
-        "ga": 72,
-        "pts": 47
+        "l": 6,
+        "otl": 0,
+        "gf": 178,
+        "ga": 85,
+        "pts": 46
       },
       {
         "team": "Aces Hockey Academy",
@@ -15200,17 +15211,6 @@
         "otl": 0,
         "gf": 244,
         "ga": 133,
-        "pts": 44
-      },
-      {
-        "team": "Warriors Hockey Academy",
-        "team_id": "294813",
-        "gp": 28,
-        "w": 22,
-        "l": 6,
-        "otl": 0,
-        "gf": 171,
-        "ga": 83,
         "pts": 44
       },
       {
@@ -15249,12 +15249,12 @@
       {
         "team": "Queen City Young Guns",
         "team_id": "294807",
-        "gp": 28,
+        "gp": 29,
         "w": 18,
-        "l": 10,
+        "l": 11,
         "otl": 0,
-        "gf": 109,
-        "ga": 80,
+        "gf": 111,
+        "ga": 87,
         "pts": 36
       },
       {
@@ -15381,12 +15381,12 @@
       {
         "team": "Sauce Hockey Academy",
         "team_id": "294809",
-        "gp": 28,
+        "gp": 29,
         "w": 12,
-        "l": 15,
+        "l": 16,
         "otl": 1,
-        "gf": 128,
-        "ga": 137,
+        "gf": 132,
+        "ga": 142,
         "pts": 25
       },
       {
@@ -15414,12 +15414,12 @@
       {
         "team": "South Sask Academy",
         "team_id": "294810",
-        "gp": 28,
+        "gp": 29,
         "w": 11,
-        "l": 16,
+        "l": 17,
         "otl": 1,
-        "gf": 92,
-        "ga": 119,
+        "gf": 95,
+        "ga": 125,
         "pts": 23
       },
       {
@@ -15500,6 +15500,17 @@
         "pts": 14
       },
       {
+        "team": "Stars Hockey Academy",
+        "team_id": "294812",
+        "gp": 29,
+        "w": 6,
+        "l": 22,
+        "otl": 1,
+        "gf": 108,
+        "ga": 215,
+        "pts": 13
+      },
+      {
         "team": "Riggers Hockey Academy",
         "team_id": "294865",
         "gp": 32,
@@ -15509,17 +15520,6 @@
         "gf": 81,
         "ga": 261,
         "pts": 12
-      },
-      {
-        "team": "Stars Hockey Academy",
-        "team_id": "294812",
-        "gp": 28,
-        "w": 5,
-        "l": 22,
-        "otl": 1,
-        "gf": 102,
-        "ga": 212,
-        "pts": 11
       },
       {
         "team": "Wolverines Hockey Academy",
@@ -21657,12 +21657,39 @@
         "division_id": "23371"
       },
       {
+        "date": "Friday, February 27, 2026",
+        "home_team": "Warriors Hockey Academy",
+        "away_team": "Queen City Young Guns",
+        "home_score": 7,
+        "away_score": 2,
+        "game_url": "https://hockeysuperleague.ca/division/0/23371/game/view/1626884",
+        "division_id": "23371"
+      },
+      {
+        "date": "Friday, February 27, 2026",
+        "home_team": "Sauce Hockey Academy",
+        "away_team": "HDC Bandits",
+        "home_score": 4,
+        "away_score": 5,
+        "game_url": "https://hockeysuperleague.ca/division/0/23371/game/view/1626885",
+        "division_id": "23371"
+      },
+      {
         "date": "Friday, February 20, 2026",
         "home_team": "Saints Pro Hockey Academy",
         "away_team": "Warriors Hockey Academy (Sask)",
         "home_score": 7,
         "away_score": 2,
         "game_url": "https://hockeysuperleague.ca/division/0/23371/game/view/1626886",
+        "division_id": "23371"
+      },
+      {
+        "date": "Friday, February 27, 2026",
+        "home_team": "Stars Hockey Academy",
+        "away_team": "South Sask Academy",
+        "home_score": 6,
+        "away_score": 3,
+        "game_url": "https://hockeysuperleague.ca/division/0/23371/game/view/1626887",
         "division_id": "23371"
       },
       {

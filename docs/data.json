@@ -1,15 +1,15 @@
 {
-  "updated": "2026-09-19 02:10 UTC",
+  "updated": "2026-09-19 09:57 UTC",
   "spartan_team_ids_rs": [
     "294868",
     "294811"
   ],
   "spartan_team_ids_po": [
-    "350513",
-    "294868"
+    "294868",
+    "350513"
   ],
   "regular_season": {
-    "games_processed": 671,
+    "games_processed": 673,
     "spartan_leaders_14": [
       {
         "name": "Sam Potvin",
@@ -8476,6 +8476,18 @@
         "gp": 4
       },
       {
+        "name": "Aidan Ramsden",
+        "player_id": "5061256",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "22",
+        "g": 2,
+        "a": 2,
+        "pts": 4,
+        "pim": 0,
+        "gp": 1
+      },
+      {
         "name": "Anakin Tays",
         "player_id": "4049282",
         "team": "Bow Valley Stars",
@@ -9040,6 +9052,18 @@
         "gp": 2
       },
       {
+        "name": "Mackenzie Slavens",
+        "player_id": "5064753",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "9",
+        "g": 3,
+        "a": 0,
+        "pts": 3,
+        "pim": 0,
+        "gp": 1
+      },
+      {
         "name": "Kyran Macnab",
         "player_id": "",
         "team": "Junior Athletics",
@@ -9218,6 +9242,30 @@
         "pts": 3,
         "pim": 4,
         "gp": 4
+      },
+      {
+        "name": "Tyrus Simon",
+        "player_id": "5061001",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "71",
+        "g": 2,
+        "a": 1,
+        "pts": 3,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Kolt Martens",
+        "player_id": "5062804",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "10",
+        "g": 2,
+        "a": 1,
+        "pts": 3,
+        "pim": 4,
+        "gp": 1
       },
       {
         "name": "Dexton Switzer",
@@ -9472,6 +9520,42 @@
         "gp": 4
       },
       {
+        "name": "Gabriel Welsh",
+        "player_id": "5060877",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "43",
+        "g": 1,
+        "a": 2,
+        "pts": 3,
+        "pim": 4,
+        "gp": 1
+      },
+      {
+        "name": "Zachary Walker",
+        "player_id": "5061922",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "14",
+        "g": 1,
+        "a": 2,
+        "pts": 3,
+        "pim": 4,
+        "gp": 1
+      },
+      {
+        "name": "Jake Boldt",
+        "player_id": "5060539",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "87",
+        "g": 1,
+        "a": 2,
+        "pts": 3,
+        "pim": 0,
+        "gp": 1
+      },
+      {
         "name": "Nathan Manning",
         "player_id": "",
         "team": "Capital City Knights",
@@ -9700,6 +9784,30 @@
         "gp": 4
       },
       {
+        "name": "Connor Wittenberg",
+        "player_id": "5060497",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "2",
+        "g": 0,
+        "a": 3,
+        "pts": 3,
+        "pim": 2,
+        "gp": 1
+      },
+      {
+        "name": "Cameron Heath",
+        "player_id": "5061519",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "88",
+        "g": 0,
+        "a": 3,
+        "pts": 3,
+        "pim": 2,
+        "gp": 1
+      },
+      {
         "name": "Sam Davey",
         "player_id": "",
         "team": "Riggers Hockey Academy",
@@ -9813,6 +9921,18 @@
         "team": "Calgary Crusaders",
         "team_id": "",
         "jersey": "2",
+        "g": 2,
+        "a": 0,
+        "pts": 2,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Jack Furlong",
+        "player_id": "5061201",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "88",
         "g": 2,
         "a": 0,
         "pts": 2,
@@ -10384,6 +10504,78 @@
         "gp": 2
       },
       {
+        "name": "Brody Gach",
+        "player_id": "5062183",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "5",
+        "g": 1,
+        "a": 1,
+        "pts": 2,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Lockhart Craig",
+        "player_id": "5062803",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "47",
+        "g": 1,
+        "a": 1,
+        "pts": 2,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Weston Bruce",
+        "player_id": "5060854",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "27",
+        "g": 1,
+        "a": 1,
+        "pts": 2,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Mackenzie Clark",
+        "player_id": "5061598",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "13",
+        "g": 1,
+        "a": 1,
+        "pts": 2,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Alexander Borjas",
+        "player_id": "5061917",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "18",
+        "g": 1,
+        "a": 1,
+        "pts": 2,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Mason Blank",
+        "player_id": "5062525",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "11",
+        "g": 1,
+        "a": 1,
+        "pts": 2,
+        "pim": 0,
+        "gp": 1
+      },
+      {
         "name": "Beckett Vigneau",
         "player_id": "",
         "team": "Capital City Knights",
@@ -10725,6 +10917,30 @@
         "team": "Junior Athletics",
         "team_id": "",
         "jersey": "11",
+        "g": 0,
+        "a": 2,
+        "pts": 2,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Nihal Takhar",
+        "player_id": "5060509",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "86",
+        "g": 0,
+        "a": 2,
+        "pts": 2,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Theodore Lau",
+        "player_id": "5061758",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "5",
         "g": 0,
         "a": 2,
         "pts": 2,
@@ -11342,6 +11558,102 @@
         "pts": 1,
         "pim": 2,
         "gp": 2
+      },
+      {
+        "name": "Matteo Giusti",
+        "player_id": "5061265",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "13",
+        "g": 1,
+        "a": 0,
+        "pts": 1,
+        "pim": 4,
+        "gp": 1
+      },
+      {
+        "name": "Luke Melnyk",
+        "player_id": "5061951",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "88",
+        "g": 1,
+        "a": 0,
+        "pts": 1,
+        "pim": 2,
+        "gp": 1
+      },
+      {
+        "name": "Claire Witwer",
+        "player_id": "",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "",
+        "jersey": "29",
+        "g": 1,
+        "a": 0,
+        "pts": 1,
+        "pim": 2,
+        "gp": 1
+      },
+      {
+        "name": "Jake Gorenc",
+        "player_id": "5062110",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "14",
+        "g": 1,
+        "a": 0,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Zyan Olynyk",
+        "player_id": "5061184",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "8",
+        "g": 1,
+        "a": 0,
+        "pts": 1,
+        "pim": 4,
+        "gp": 1
+      },
+      {
+        "name": "Colten Dunn",
+        "player_id": "5061624",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "71",
+        "g": 1,
+        "a": 0,
+        "pts": 1,
+        "pim": 4,
+        "gp": 1
+      },
+      {
+        "name": "Kasen Mackenzie",
+        "player_id": "5060819",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "7",
+        "g": 1,
+        "a": 0,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Theodore Wells",
+        "player_id": "5060821",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "5",
+        "g": 1,
+        "a": 0,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
       },
       {
         "name": "Mario Hanssen",
@@ -12225,6 +12537,102 @@
         "team": "Calgary Crusaders",
         "team_id": "",
         "jersey": "43",
+        "g": 0,
+        "a": 1,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Traigh Brady",
+        "player_id": "5061796",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "8",
+        "g": 0,
+        "a": 1,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Blakely Tougas",
+        "player_id": "5089158",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "66",
+        "g": 0,
+        "a": 1,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Max Olsen",
+        "player_id": "5122877",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "17",
+        "g": 0,
+        "a": 1,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Carter Mangan",
+        "player_id": "",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "",
+        "jersey": "91",
+        "g": 0,
+        "a": 1,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Holt Hamill",
+        "player_id": "5062153",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "19",
+        "g": 0,
+        "a": 1,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Elias Woobin Jung",
+        "player_id": "5061993",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "7",
+        "g": 0,
+        "a": 1,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Kaysen Derosa",
+        "player_id": "5061227",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "17",
+        "g": 0,
+        "a": 1,
+        "pts": 1,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Chase Kern",
+        "player_id": "5062479",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "21",
         "g": 0,
         "a": 1,
         "pts": 1,
@@ -15122,6 +15530,282 @@
         "pts": 0,
         "pim": 0,
         "gp": 1
+      },
+      {
+        "name": "Ashton Lee",
+        "player_id": "5123013",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "87",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 2,
+        "gp": 1
+      },
+      {
+        "name": "Benjamin Dunphy",
+        "player_id": "5061789",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "7",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Kian Lee",
+        "player_id": "5062329",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "4",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Alfie McQuade",
+        "player_id": "5062460",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "34",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Oakley Hansen",
+        "player_id": "5060737",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "18",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Brennan Begley",
+        "player_id": "5060978",
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "jersey": "1",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Augustino Dumelie",
+        "player_id": "5061878",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "98",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Lincoln Houghtaling",
+        "player_id": "",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "",
+        "jersey": "42",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Jaxson Bolibruck",
+        "player_id": "5061676",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "4",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Emery Tozer",
+        "player_id": "5060792",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "37",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Remington Haensel",
+        "player_id": "5060802",
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "jersey": "34",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Jaxon Achtymichuk",
+        "player_id": "5062703",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "77",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Vincent Grimbly",
+        "player_id": "5060979",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "74",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Emerson Dolan",
+        "player_id": "5061638",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "29",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Logan Bell",
+        "player_id": "5062000",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "26",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 4,
+        "gp": 1
+      },
+      {
+        "name": "Cruz Smith",
+        "player_id": "5061652",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "18",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 2,
+        "gp": 1
+      },
+      {
+        "name": "Maxwell Doyle",
+        "player_id": "5062474",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "13",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 6,
+        "gp": 1
+      },
+      {
+        "name": "Patrick Carroll",
+        "player_id": "5060815",
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "jersey": "11",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Lola Carruthers",
+        "player_id": "5061625",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "91",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Owen Patey",
+        "player_id": "5061830",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "55",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Zander Pinksen",
+        "player_id": "5061918",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "31",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "Beckam Merlo",
+        "player_id": "5062462",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "24",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
+      },
+      {
+        "name": "River Amyotte",
+        "player_id": "5061174",
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "jersey": "15",
+        "g": 0,
+        "a": 0,
+        "pts": 0,
+        "pim": 0,
+        "gp": 1
       }
     ],
     "standings": [
@@ -15588,6 +16272,28 @@
         "pts": 2
       },
       {
+        "team": "Bow Valley Jr. Bigfoot",
+        "team_id": "402286",
+        "gp": 1,
+        "w": 1,
+        "l": 0,
+        "otl": 0,
+        "gf": 8,
+        "ga": 6,
+        "pts": 2
+      },
+      {
+        "team": "MOB Hockey",
+        "team_id": "402363",
+        "gp": 1,
+        "w": 1,
+        "l": 0,
+        "otl": 0,
+        "gf": 8,
+        "ga": 6,
+        "pts": 2
+      },
+      {
         "team": "Alberta Pro Hockey",
         "team_id": "294750",
         "gp": 2,
@@ -15706,6 +16412,28 @@
         "otl": 0,
         "gf": 0,
         "ga": 0,
+        "pts": 0
+      },
+      {
+        "team": "HC Calgary Bandits",
+        "team_id": "402285",
+        "gp": 1,
+        "w": 0,
+        "l": 1,
+        "otl": 0,
+        "gf": 6,
+        "ga": 8,
+        "pts": 0
+      },
+      {
+        "team": "Gorillas Hockey Academy",
+        "team_id": "402358",
+        "gp": 1,
+        "w": 0,
+        "l": 1,
+        "otl": 0,
+        "gf": 6,
+        "ga": 8,
         "pts": 0
       },
       {
@@ -21780,6 +22508,24 @@
         "home_score": 2,
         "away_score": 4,
         "game_url": "https://hockeysuperleague.ca/division/0/23371/game/view/1626912",
+        "division_id": "23371"
+      },
+      {
+        "date": "Friday, September 18, 2026",
+        "home_team": "HC Calgary Bandits",
+        "away_team": "Bow Valley Jr. Bigfoot",
+        "home_score": 6,
+        "away_score": 8,
+        "game_url": "https://hockeysuperleague.ca/division/0/23371/game/view/2019794",
+        "division_id": "23371"
+      },
+      {
+        "date": "Friday, September 18, 2026",
+        "home_team": "Gorillas Hockey Academy",
+        "away_team": "MOB Hockey",
+        "home_score": 6,
+        "away_score": 8,
+        "game_url": "https://hockeysuperleague.ca/division/0/23371/game/view/2019798",
         "division_id": "23371"
       }
     ]

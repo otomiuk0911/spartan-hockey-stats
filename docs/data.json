@@ -1,12 +1,12 @@
 {
-  "updated": "2026-10-02 11:33 UTC",
+  "updated": "2026-10-02 17:00 UTC",
   "spartan_team_ids_rs": [
     "294868",
     "294811"
   ],
   "spartan_team_ids_po": [
-    "294868",
-    "350513"
+    "350513",
+    "294868"
   ],
   "regular_season": {
     "games_processed": 673,
